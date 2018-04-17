@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -69,23 +70,36 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            if(User::isUserAdmin(Yii::$app->user->identity->id)){
+                return $this->redirect(["usuario/index"]);
+            }else if(User::isUserChefe(Yii::$app->user->identity->id)){
+                return $this->redirect(["chefe/index"]);
+            }else{
+                 return $this->redirect(["admin/index"]);
+            }
+           // return $this->goHome();
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if(User::isUserAdmin(Yii::$app->user->identity->id)){
+                return $this->redirect(["usuario/index"]);
+            }else{
+                return $this->redirect(["usuario/index"]);
+            }
+           // return $this->goBack();
         }
 
         $model->password = '';
         return $this->render('login', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
-
+    
+    
+    
     /**
      * Logout action.
      *

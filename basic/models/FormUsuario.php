@@ -1,49 +1,94 @@
 <?php
-
 namespace app\models;
-
 use Yii;
 use yii\base\model;
 
-class FormAlunos extends model {
+class FormUsuario extends model {
 
-    public $id_aluno;
+    public $id;
     public $nome;
-    public $sobrenome;
-    public $turma;
-    public $nota_final;
+    public $username;
+    public $email;
+    public $cpf;
+    public $endereco;
+    public $instituicao;
+    public $password;
+    public $confsenha;
 
     public function rules() {
         return [
-            ['id_aluno','integer', 'message'=>'ID incorreto.'],
+            ['id','integer', 'message'=>'ID incorreto.'],
+            ['username', 'required', 'message' => 'Campo obrigatório.'],
+            ['username', 'match', 'pattern' => "/^.{6,20}$/", 'message' => 'Tamanho entre 6 e 20 caracteres.'],
+            ['username', 'match', 'pattern' => "/^[a-z]+$/i", 'message' => 'Apenas letras de A:Z.'],
+            ['username', 'username_existe'],
             ['nome', 'required', 'message' => 'Campo obrigatório.'],
             ['nome', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Tamanho entre 3 e 50 caracteres.'],
-            ['nome', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ]+$/i", 'message' => 'Apenas letras.'],
-            ['sobrenome', 'required', 'message' => 'Campo obrigatório.'],
-            ['sobrenome', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Tamanho entre 3 e 50 caracteres.'],
-            ['sobrenome', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
-            ['turma', 'required', 'message' => 'Campo obrigatório.'],
-            ['turma', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Tamanho entre 3 e 50 caracteres.'],
-            ['turma', 'match', 'pattern' => "/^[0-9]+$/i", 'message' => 'Apenas números.'],
-            ['nota_final', 'required', 'message' => 'Campo obrigatório.'],
-            ['nota_final', 'match', 'pattern' => "/^.{1,4}$/", 'message' => 'Tamanho entre 1 e 4 caracteres.'],
-            ['nota_final', 'match', 'pattern' => "/^[0-9,]+$/i", 'message' => 'Apenas números.'],
-
-            
-//            ['email', 'required', 'message' => 'Campo obrigatório.'],
-//            ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Tamanho entre 5 e 80 caracteres.'],
-//            ['email', 'email', 'message' => 'Formato de Email inválido.'],
+            ['nome', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
+            ['endereco', 'required', 'message' => 'Campo obrigatório.'],
+            ['endereco', 'match', 'pattern' => "/^.{3,100}$/", 'message' => 'Tamanho entre 3 e 100 caracteres.'],
+            ['endereco', 'match', 'pattern' => "/^[1-9a-záéíóúñâêôûãõ -°]+$/i", 'message' => 'Apenas letras e números.'],
+            ['cpf', 'required', 'message' => 'Campo obrigatório.'],
+            ['cpf', 'match', 'pattern' => "/^[1-9.-]+$/i", 'message' => 'Apanas . - e números.'],
+            ['cpf', 'match', 'pattern' => "/^.{11,14}$/", 'message' => 'Tamanho entre 11 e 14 caracteres.'],
+            ['cpf', 'cpf_existe'],
+            ['instituicao', 'required', 'message' => 'Campo obrigatório.'],
+            ['instituicao', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Tamanho entre 3 e 50 caracteres.'],
+            ['instituicao', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
+            ['email', 'required', 'message' => 'Campo obrigatório.'],
+            ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Tamanho entre 5 e 80 caracteres.'],
+            ['email', 'email', 'message' => 'Formato de Email inválido.'],
+            ['email', 'email_existe'],
+            ['password', 'match', 'pattern' => "/^.{6,16}$/", 'message' => 'No mínimo 6 e no máximo 16 caracteres'],
+            ['confsenha', 'compare', 'compareAttribute' => 'password', 'message' => 'Senhas não corresponem'],
         ];
     }
 
     public function attributeLabels() {
         return array( 
-            'nome' => 'Nome:',
-            'sobrenome' => 'Sobrenome:',
-            'turma' => 'Turma:',
-            'nota_final' => 'Nota Final:',
+            'nome' => 'Nome Completo:',
+            'username' => 'Login no sistema:',
+            'cpf' => 'CPF:',
+            'email' => 'Email:',
+            'password' => 'Senha:',
+            'confsenha' => 'Confirmação de senha:',
+            'instituicao' => 'Instituicao:',
+            'endereco' => 'Endereço:',
             );
     }
 
+    
+    public function email_existe($attribute, $params) {
+
+        //Buscar el email en la tabla
+        $table = Usuario::find()->where("email=:email", [":email" => $this->email]);
+
+        //Si el email existe mostrar el error
+        if ($table->count() == 1) {
+            $this->addError($attribute, "Este email já está cadastrado em nosso sistema");
+        }
+    }
+    
+    
+     public function username_existe($attribute, $params) {
+        //Buscar el username en la tabla
+        $table = Usuario::find()->where("username=:username", [":username" => $this->username]);
+
+        //Si el username existe mostrar el error
+        if ($table->count() == 1) {
+            $this->addError($attribute, "Este usuário já existem em nosso sistema");
+        }
+    }
+    
+     public function cpf_existe($attribute, $params) {
+        //Buscar el username en la tabla
+        $table = Usuario::find()->where("cpf=:cpf", [":cpf" => $this->cpf]);
+
+        //Si el username existe mostrar el error
+        if ($table->count() == 1) {
+            $this->addError($attribute, "Este CPF já existem em nosso sistema");
+        }
+    }
+    
 }
 

@@ -3,7 +3,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Alunos extends \yii\db\ActiveRecord{
+class Usuario extends \yii\db\ActiveRecord{
     public static function getDb() {
         return Yii::$app->db;
     }
