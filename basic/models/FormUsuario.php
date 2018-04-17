@@ -49,7 +49,7 @@ class FormUsuario extends model {
             'nome' => 'Nome Completo:',
             'username' => 'Login no sistema:',
             'cpf' => 'CPF:',
-            'email' => 'Email:',
+            'email' => 'E-mail:',
             'password' => 'Senha:',
             'confsenha' => 'Confirmação de senha:',
             'instituicao' => 'Instituicao:',
