@@ -85,38 +85,42 @@ class AcontecimentoController extends Controller {
         
         }
         public function actionCadastrar(){
-          /*
-            passagem de parametro
-          */
         //instanciando model do formulario com as regras
         $cadastroModel= new FormAcontecimento();
         $msg = null;
+        if ($cadastroModel->load(Yii::$app->request->post())) {
+             $msg = "Post"; //PAROU  AQUI ALAN
+           if ($cadastroModel->validate()){
+            $acontecimento =  new Acontecimento;
+            $msg = "Validado";
+           $acontecimento->descricao = $cadastroModel->descricao;
+           $acontecimento->local_acontecimento = $cadastroModel->local_acontecimento;
+           $acontecimento->data_inicio = $cadastroModel->data_inicio;
+           $acontecimento->data_fim = $cadastroModel->data_fim;
+           $acontecimento->tipo = $cadastroModel->tipo;
+          // A linha de baixo já adicionará altomaticamente o usuário que estiver Logado, [Funciona so quando estiver..]
+          // $acontecimento->id_usuario = Yii::$app->user->identity->id;
+           $acontecimento->id_usuario = $cadastroModel->id_usuario;
+           $acontecimento->status = $cadastroModel->status;
+           $acontecimento->id_evento = $cadastroModel->id_evento;
 
-        $post=Yii::$app->request->post();
-        if($cadastroModel->load($post) && $cadastroModel->validate()){
-           $acontecimento=  new Acontecimento;
-           $acontecimento->descricao=$cadastroModel->descricao;
-           $acontecimento->local_acontecimento=$cadastroModel->local_acontecimento;
-           $acontecimento->data_inicio=$cadastroModel->data_inicio;
-           $acontecimento->data_fim=$cadastroModel->data_fim;
-           $acontecimento->tipo=$cadastroModel->tipo;
-           $acontecimento->id_usuario=$cadastroModel->id_usuario;
-           $acontecimento->tipo=$cadastroModel->tipo;
-           $acontecimento->id_evento=$cadastroModel->id_evento;
-
-            
-            
-                  if($evento->insert()){
+            if($acontecimento->insert()){
                     $msg =  "Acontecimento cadastrado com sucesso :D";
                     $cadastroModel->descricao = null;
                     $cadastroModel->local_evento = null;
                     $cadastroModel->data_inicio = null;
                     $cadastroModel->data_fim = null;
+                    $cadastroModel->tipo = null;
+                    $cadastroModel->status = null;
+                    $cadastroModel->id_evento = null;
                     
                 }else{
                     $msg = "Erro ao cadastrar evento :(";
                 }
 
+        }else {
+                $cadastroModel->getErrors();
+        }
         }
         return $this->render("cadastrar",["model"=>$cadastroModel, "msg"=>$msg]);
 

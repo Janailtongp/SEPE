@@ -10,16 +10,18 @@ use yii\helpers\Url;
 
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 
-<?php $form = ActiveForm::begin(); ?>
-<?= $form->field($model,'descricao')?>
-<?= $form->field($model, 'local_acontecimento') ?>
-<?= $form->field($model, 'tipo') ?>
-<?= $form->field($model, 'status') ?>
-<?= $form->field($model, 'id_usuario') ?>
-<?= $form->field($model, 'id_evento') ?>
+<?php $form = ActiveForm::begin(
+                    ["method" => "post",
+                    "enableClientValidation" => true]); ?>
 
-<?= $form->field($model, 'data_inicio') ?>
-<?= $form->field($model, 'data_fim') ?>
+<?= $form->field($model,'descricao')->input("text");?>
+<?= $form->field($model, 'local_acontecimento')->input("text"); ?>
+<?= $form->field($model, 'tipo')->input("text"); ?>
+<?= $form->field($model, 'status')->input("text"); ?>
+<?= $form->field($model, 'id_usuario')->input("text"); ?>
+<?= $form->field($model, 'id_evento')->input("text"); ?>
+<?= $form->field($model, 'data_inicio')->input("date"); ?>
+<?= $form->field($model, 'data_fim')->input("date"); ?>
 
 <div class='form-group'>
     <?= HTML::submitButton('Cadastrar',['class'=>'btn btn-primary'])?>

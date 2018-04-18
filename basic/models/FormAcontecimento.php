@@ -19,9 +19,9 @@ class FormAcontecimento extends model {
     public function rules() {
         return [
             ['id','integer', 'message'=>'ID incorreto.'],
-            ['id_usuario','integer', 'required', 'message' => 'Campo obrigatório.'],
-            ['id_evento','integer', 'required', 'message' => 'Campo obrigatório.'],
-            ['ministrante','required'],
+            ['id_usuario', 'required', 'message' => 'Campo obrigatório.'],
+            ['id_evento', 'required', 'message' => 'Campo obrigatório.'],
+            ['ministrante','required', 'message' => 'Campo obrigatório.'],
             ['descricao', 'match', 'pattern' => "/^.{3,200}$/", 'message' => 'Tamanho entre 3 e 200 caracteres.'],
             ['descricao', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
             ['local_acontecimento', 'required', 'message' => 'Campo obrigatório.'],
@@ -29,10 +29,9 @@ class FormAcontecimento extends model {
             ['local_acontecimento', 'match', 'pattern' => "/^[1-9a-záéíóúñâêôûãõ -°]+$/i", 'message' => 'Apenas letras e números.'],
             ['data_inicio', 'required', 'message' => 'Campo obrigatório.'],
             ['data_fim', 'required', 'message' => 'Campo obrigatório.'],
-            ['status','required'],
-            ['tipo','required']
-            
-             ];
+            ['status','required', 'message' => 'Campo obrigatório.'],
+            ['tipo','required', 'message' => 'Campo obrigatório.'],
+            ];
     }
 
     public function attributeLabels() {
@@ -40,11 +39,12 @@ class FormAcontecimento extends model {
             'descricao' => 'Descrição do Acontecimento:',
             'local_acontecimento' => 'Local Acontecimento:',
             'data_inicio' => 'Data do Inicio do Acontecimento',
-            'tipo'=>'Tipo: ',
+            'tipo'=>'Tipo:',
             'status'=>'Status:',
-            'id_usuario'=>'Usuário:',
+            'id_usuario'=>'ID do Usuário:',
+            'id_evento'=>'ID do Evento:',
             'ministrante'=>'Ministrante(s)',
-            'data_fim' => 'Data do Fim do Acontecimento:'
+            'data_fim' => 'Data do Fim do Acontecimento:',
             );
     }
 
