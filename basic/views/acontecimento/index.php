@@ -1,7 +1,4 @@
 
-
-
-
 <?php
 
 use yii\helpers\Url;
@@ -11,7 +8,7 @@ use yii\data\Pagination;
 use yii\widgets\LinkPager;
 $f = ActiveForm::begin([
             "method" => "get",
-            "action" => Url::toRoute("evento/index"),
+            "action" => Url::toRoute("acontecimento/index"),
             "enableClientValidation" => true,
         ])
 ?>
@@ -25,28 +22,36 @@ $f = ActiveForm::begin([
 
 
 
-<h3>Lista de Eventos</h3>
+<h3>Lista de Acontecimentos</h3>
 
 <table class="table table-bordered">
     <tr>
         <th>Descrição</th>
-        <th>Local do Evento</th>
+        <th>Tipo</th>
+        <th>Evento</th>
+        <th>Ministrante(s)</th>
+        <th>Local do Acontecimento</th>
         <th>Data Inicio</th>
         <th>Data Fim</th>
-        <th></th>
-        <th></th>
-                <th></th>
+        <th>Usuário</th>
+        <th>Status</th>
 
+        <th></th>
+        <th></th>
     </tr>
     <?php foreach ($model as $row): ?>
         <tr>
             <td><?= $row->descricao ?></td>
-            <td><?= $row->local_evento ?></td>
-            <td><?= $row->data_inicio?></td>
+            <td><?= $row->tipo ?></td>
+            <td><?= $row->id_evento?></td>
+            <td><?= $row->ministrante ?></td>
+            <td><?= $row->local_acontecimento ?></td>
+            <td><?= $row->data_inicio ?></td>
             <td><?= $row->data_fim ?></td>
-            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>">Editar</a></td>
-            <td><a href="<?= Url::toRoute(["acontecimento/index","id"=>$row->id, "descricao"=>$row->descricao])?>">Acontecimentos</a></td>
+            <td><?= $row->id_usuario ?></td>
+            <td><?= $row->status ?></td>
 
+            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>">Editar</a></td>
             <td>
                 <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>">Excluir</a>
             </td>
