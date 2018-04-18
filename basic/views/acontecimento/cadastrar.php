@@ -15,13 +15,17 @@ use yii\helpers\Url;
                     "enableClientValidation" => true]); ?>
 
 <?= $form->field($model,'descricao')->input("text");?>
+<?= $form->field($model,'ministrante')->input("text");?>
 <?= $form->field($model, 'local_acontecimento')->input("text"); ?>
-<?= $form->field($model, 'tipo')->input("text"); ?>
-<?= $form->field($model, 'status')->input("text"); ?>
-<?= $form->field($model, 'id_usuario')->input("text"); ?>
+<?= $form->field($model, 'tipo')->dropDownList(
+			['Palestra' => 'Palestra', 'Minicurso'=> 'Minicurso', 'Mesa redonda'=> 'Mesa redonda']
+			); ?> 
+<?= $form->field($model, 'status')->dropDownList(
+			['Aberto' => 'Aberto', 'Fechado'=> 'Fechado']
+			); ?> 
 <?= $form->field($model, 'id_evento')->input("text"); ?>
-<?= $form->field($model, 'data_inicio')->input("date"); ?>
-<?= $form->field($model, 'data_fim')->input("date"); ?>
+<?= $form->field($model, 'data_inicio')->input("text"); ?>
+<?= $form->field($model, 'data_fim')->input("text"); ?>
 
 <div class='form-group'>
     <?= HTML::submitButton('Cadastrar',['class'=>'btn btn-primary'])?>

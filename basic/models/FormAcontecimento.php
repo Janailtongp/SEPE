@@ -18,10 +18,6 @@ class FormAcontecimento extends model {
   
     public function rules() {
         return [
-            ['id','integer', 'message'=>'ID incorreto.'],
-            ['id_usuario', 'required', 'message' => 'Campo obrigatório.'],
-            ['id_evento', 'required', 'message' => 'Campo obrigatório.'],
-            ['ministrante','required', 'message' => 'Campo obrigatório.'],
             ['descricao', 'match', 'pattern' => "/^.{3,200}$/", 'message' => 'Tamanho entre 3 e 200 caracteres.'],
             ['descricao', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
             ['local_acontecimento', 'required', 'message' => 'Campo obrigatório.'],
@@ -31,6 +27,9 @@ class FormAcontecimento extends model {
             ['data_fim', 'required', 'message' => 'Campo obrigatório.'],
             ['status','required', 'message' => 'Campo obrigatório.'],
             ['tipo','required', 'message' => 'Campo obrigatório.'],
+            ['id_evento', 'required', 'message' => 'Campo obrigatório.'],
+            ['ministrante','required', 'message' => 'Campo obrigatório.'],
+            ['ministrante', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
             ];
     }
 
