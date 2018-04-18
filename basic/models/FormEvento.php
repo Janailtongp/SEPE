@@ -21,7 +21,7 @@ class FormEvento extends model {
             ['local_evento', 'match', 'pattern' => "/^.{3,200}$/", 'message' => 'Tamanho entre 3 e 200 caracteres.'],
             ['local_evento', 'match', 'pattern' => "/^[1-9a-záéíóúñâêôûãõ -°]+$/i", 'message' => 'Apenas letras e números.'],
             ['data_inicio', 'required', 'message' => 'Campo obrigatório.'],
-            ['data_fim', 'required', 'message' => 'Campo obrigatório.'],
+            ['data_fim', 'required', 'message' => 'Campo obrigatório.']
             
              ];
     }

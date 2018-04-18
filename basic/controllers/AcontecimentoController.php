@@ -5,17 +5,21 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\SearchEvento;
-use app\models\SearchAcontecimento;
-
 use yii\helpers\Html;
 use yii\data\Pagination;
 use yii\helpers\Url;
+
+use app\models\SearchEvento;
+use app\models\SearchAcontecimento;
+
+
 use app\models\Evento;
 use app\models\User;
-use app\models\FormEvento;
-
 use app\models\Acontecimento;
+
+use app\models\FormEvento;
+use app\models\FormAcontecimento;
+
 
 
 
@@ -55,7 +59,9 @@ class AcontecimentoController extends Controller {
             }
         }else{
 
-            $table = Acontecimento::find();
+            $table = Acontecimento::find()->where(array('id_evento'=>$id));
+            
+
             $count = clone $table;
             $pages =  new Pagination([
                 "pageSize" => 4,
@@ -69,11 +75,11 @@ class AcontecimentoController extends Controller {
         return $this->render("index",["model"=>$model, "form"=>$form, "search"=>$search, "pages"=>$pages]);
 
                     }else{
-                        echo "Erro, tente novamente ...";
+                        echo "Erro, tente novamente ... 3";
                         echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
                     }
                 }else{
-                    echo "Erro ao encontrar evento!, tente novamente ...";
+                    echo "Erro ao encontrar evento 3!, tente novamente ...";
                     echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
                 }
         
@@ -83,18 +89,25 @@ class AcontecimentoController extends Controller {
             passagem de parametro
           */
         //instanciando model do formulario com as regras
-        $cadastroModel= new FormEvento();
+        $cadastroModel= new FormAcontecimento();
         $msg = null;
 
         $post=Yii::$app->request->post();
         if($cadastroModel->load($post) && $cadastroModel->validate()){
-            $evento=  new Evento;
-            $evento->descricao=$cadastroModel->descricao;
-            $evento->local_evento=$cadastroModel->local_evento;
-            $evento->data_inicio=$cadastroModel->data_inicio;
-            $evento->data_fim=$cadastroModel->data_fim;
+           $acontecimento=  new Acontecimento;
+           $acontecimento->descricao=$cadastroModel->descricao;
+           $acontecimento->local_acontecimento=$cadastroModel->local_acontecimento;
+           $acontecimento->data_inicio=$cadastroModel->data_inicio;
+           $acontecimento->data_fim=$cadastroModel->data_fim;
+           $acontecimento->tipo=$cadastroModel->tipo;
+           $acontecimento->id_usuario=$cadastroModel->id_usuario;
+           $acontecimento->tipo=$cadastroModel->tipo;
+           $acontecimento->id_evento=$cadastroModel->id_evento;
+
+            
+            
                   if($evento->insert()){
-                    $msg =  "Evento cadastrado com sucesso :D";
+                    $msg =  "Acontecimento cadastrado com sucesso :D";
                     $cadastroModel->descricao = null;
                     $cadastroModel->local_evento = null;
                     $cadastroModel->data_inicio = null;

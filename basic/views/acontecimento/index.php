@@ -6,6 +6,25 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
+function F_conect(){
+        $servidor = "localhost";    
+        $nomebanco = "sepe" ;
+        $usuario = "root";
+        $senha = "";
+
+        // Criando conexão com o Banco de Dados
+        $conn = new mysqli($servidor, $usuario, $senha,$nomebanco);
+
+        // Checando conexão erro
+        if ($conn->connect_error)
+            {
+            //Caso verdadeiro, Mostra o Erro.
+            die("Connection failed: " . $conn->connect_error);
+        }else{
+            // Caso falso, retorna a conexão
+            return $conn;
+        }
+    }
 $f = ActiveForm::begin([
             "method" => "get",
             "action" => Url::toRoute("acontecimento/index"),
@@ -37,7 +56,7 @@ $f = ActiveForm::begin([
         <th>Status</th>
 
         <th></th>
-        <th></th>
+       
     </tr>
     <?php foreach ($model as $row): ?>
         <tr>
@@ -48,13 +67,25 @@ $f = ActiveForm::begin([
             <td><?= $row->local_acontecimento ?></td>
             <td><?= $row->data_inicio ?></td>
             <td><?= $row->data_fim ?></td>
-            <td><?= $row->id_usuario ?></td>
+            <?php
+             $conn = F_conect();
+    $result = mysqli_query($conn, "Select * from usuario where id=" . $row->id_usuario);
+
+    if (mysqli_num_rows($result)) {
+        while ($row1 = $result->fetch_assoc()) {
+            echo"<td>" . $row1['nome'] . "</td>";
+           
+        }
+    }
+    $conn->close();
+            ?>
             <td><?= $row->status ?></td>
 
-            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>">Editar</a></td>
-            <td>
-                <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>">Excluir</a>
-            </td>
+            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
+glyphicon glyphicon-cog"></i></a>
+           
+                <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
+</td>
                     <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
                                 <div class='modal-dialog' role='document'>
                                     <div class='modal-content'>
@@ -63,7 +94,7 @@ $f = ActiveForm::begin([
                                             <h4 class='modal-title' id='myModalLabel'>Excluir registro!</h4>
                                         </div>
                                         <div class='modal-body'>
-                                            <p>Deseja realmente excluir o registro deste evento: <?= $row->descricao?> <?= $row->local_evento?> ?</p>    
+                                            <p>Deseja realmente excluir o registro deste evento: <?= $row->descricao?> <?= $row->local_acontecimento?> ?</p>    
                                         </div>
                                         <div class='modal-footer'>
                                             <?= Html::beginForm(Url::toRoute("evento/delete"), "POST") ?>
@@ -76,7 +107,7 @@ $f = ActiveForm::begin([
                     </div>
             </tr>
 <?php endforeach; ?>
-            <tr><td><a href="<?= Url::toRoute("evento/cadastrar") ?>">Adicionar um novo Evento</a><td></td><td></td><td></td><td></td><td></td>
+            <tr><td><a href="<?= Url::toRoute("acontecimento/cadastrar") ?>"><i class="glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
 </td></tr>
 </table>
 
