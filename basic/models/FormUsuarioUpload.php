@@ -3,7 +3,7 @@ namespace app\models;
 use Yii;
 use yii\base\model;
 
-class FormUsuario extends model {
+class FormUsuarioUpload extends model {
 
     public $id;
     public $nome;
@@ -14,14 +14,13 @@ class FormUsuario extends model {
     public $instituicao;
     public $password;
     public $confsenha;
-
+    public $role;
     public function rules() {
         return [
             ['id','integer', 'message'=>'ID incorreto.'],
             ['username', 'required', 'message' => 'Campo obrigatório.'],
             ['username', 'match', 'pattern' => "/^.{6,20}$/", 'message' => 'Tamanho entre 6 e 20 caracteres.'],
             ['username', 'match', 'pattern' => "/^[a-z]+$/i", 'message' => 'Apenas letras de A:Z.'],
-            ['username', 'username_existe'],
             ['nome', 'required', 'message' => 'Campo obrigatório.'],
             ['nome', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Tamanho entre 3 e 50 caracteres.'],
             ['nome', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
@@ -31,18 +30,17 @@ class FormUsuario extends model {
             ['cpf', 'required', 'message' => 'Campo obrigatório.'],
             ['cpf', 'match', 'pattern' => "/^[1-9.-]+$/i", 'message' => 'Apanas . - e números.'],
             ['cpf', 'match', 'pattern' => "/^.{11,14}$/", 'message' => 'Tamanho entre 11 e 14 caracteres.'],
-            ['cpf', 'cpf_existe'],
             ['instituicao', 'required', 'message' => 'Campo obrigatório.'],
             ['instituicao', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Tamanho entre 3 e 50 caracteres.'],
             ['instituicao', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
             ['email', 'required', 'message' => 'Campo obrigatório.'],
             ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Tamanho entre 5 e 80 caracteres.'],
             ['email', 'email', 'message' => 'Formato de Email inválido.'],
-            ['email', 'email_existe'],
             ['password', 'match', 'pattern' => "/^.{6,16}$/", 'message' => 'No mínimo 6 e no máximo 16 caracteres'],
             ['password', 'required', 'message' => 'Campo obrigatório.'],
             ['confsenha', 'compare', 'compareAttribute' => 'password', 'message' => 'Senhas não corresponem'],
             ['confsenha', 'required', 'message' => 'Campo obrigatório.'],
+            ['role', 'required', 'message' => 'Campo obrigatório.'],
         ];
     }
 
@@ -56,6 +54,7 @@ class FormUsuario extends model {
             'confsenha' => 'Confirmação de senha:',
             'instituicao' => 'Instituicao:',
             'endereco' => 'Endereço:',
+            'role' => 'Nível de acesso:',
             );
     }
 

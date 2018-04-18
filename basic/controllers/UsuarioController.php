@@ -1,5 +1,7 @@
 <?php
+
 namespace app\controllers;
+
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -14,21 +16,83 @@ use yii\helpers\Url;
 use app\models\Usuario;
 use app\models\User;
 use app\models\FormUsuario;
+use app\models\FormUsuarioUpload;
+use app\models\FormUsuarioUploadAdmin;
 use app\models\SearchUsuario;
 
-
-
-
 class UsuarioController extends Controller {
-     public function actionIndex() {
-         $idLogado = Yii::$app->user->identity->id;
-        return $this->render('index',["idLogado"=>$idLogado]);
+
+    public function actionIndex() {
+        if (isset(Yii::$app->user->identity->id)) {
+            $idLogado = Yii::$app->user->identity->id;
+        } else {
+            $idLogado = "Nineguem logado no momento";
+        }
+        return $this->render('index', ["idLogado" => $idLogado]);
     }
+
+    public function actionMeusdados(){
+       // Exibir os dados da pessoa logada com ID -> Yii::$app->user->identity->id;
+        $model = new FormUsuarioUpload;
+        $msg = null;
+        if (isset(Yii::$app->user->identity->id)){
+                $table = Usuario::findOne(Yii::$app->user->identity->id);
+                if($table){
+                    $model->id = $table->id;
+                    $model->username = $table->username;
+                    $model->nome = $table->nome;
+                    $model->cpf = $table->cpf;
+                    $model->email = $table->email;
+                    $model->endereco = $table->endereco;
+                    $model->instituicao = $table->instituicao;
+                    $model->password = $table->password;
+                }else{
+                     return $this->redirect(["usuario/index"]);
+                }
+        }else{
+            return $this->redirect(["site/login"]);
+        }
+        //Salvar quando o Post for acionado
+        if (isset(Yii::$app->user->identity->id)){
+            if ($model->load(Yii::$app->request->post())){
+                if ($model->validate()) {
+                    $table = Usuario::findOne(Yii::$app->user->identity->id);
+                    if($table){
+                        $table->nome = $model->nome;
+                        
+                     /* [USERNAME CPF E EMAIL] NãO PODEM SER ALTERADOS POIS POSSUEM FILTRO DE EXISTÊNCIA
+                        CASO O CARA DEIXE O MESMO NÃO VAI DAR ERRO.
+                       $table->username = $model->username;
+                        $table->email = $model->email;
+                        $table->cpf = $model->cpf; */
+                        
+                        $table->endereco = $model->endereco;
+                        $table->instituicao = $model->instituicao;
+                        $table->password = $model->password;
+                        if ($table->update()){
+                            $msg = "Registro atualizado com sucesso!";
+                        } else {
+                            $msg = "Registro não pode ser atualizado";
+                        }
+                    } else {
+                        $msg = "Registro selecionado não encontrado!";
+                    }
+                } else {
+                    $model->getErrors();
+                }
+            }
+        } else {
+             return $this->redirect(["site/login"]);
+        }
+        
+        return $this->render('meusdados', ["msg" => $msg, "model"=>$model]);
+    }
+
     public function actionCadastrar() {
         $model = new FormUsuario;
         $msg = null;
-        if($model->load(Yii::$app->request->post())){
-            if($model->validate()){
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
                 $table = new Usuario;
                 $table->nome = $model->nome;
                 $table->email = $model->email;
@@ -38,8 +102,8 @@ class UsuarioController extends Controller {
                 $table->cpf = $model->cpf;
                 $table->username = $model->username;
                 $table->role = 1;
-                if($table->insert()){
-                    $msg =  "Usuário cadastrado com sucesso :D";
+                if ($table->insert()) {
+                    $msg = "Usuário cadastrado com sucesso :D";
                     $model->nome = null;
                     $model->username = null;
                     $model->email = null;
@@ -47,28 +111,29 @@ class UsuarioController extends Controller {
                     $model->password = null;
                     $model->endereco = null;
                     $model->instituicao = null;
-                }else{
+                    $model->confsenha  = null;
+                } else {
                     $msg = "Erro ao cadastrar usuário :(";
                 }
-            }else{
+            } else {
                 $model->getErrors();
             }
         }
-        return $this->render("cadastrar",["model"=>$model, "msg"=>$msg]);
+        return $this->render("cadastrar", ["model" => $model, "msg" => $msg]);
     }
-    
-     public function actionListar(){
+
+    public function actionListar() {
         $form = new SearchUsuario;
         $search = null;
-        if($form->load(Yii::$app->request->get())){
-            if($form->validate()){
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
                 $search = Html::encode($form->q);
                 $table = Usuario::find()->where(["like", "id", $search])
-                                       ->orWhere(["like", "nome", $search])
-                                       ->orWhere(["like", "username", $search])
-                                       ->orWhere(["like", "email", $search])
-                                       ->orWhere(["like", "cpf", $search])
-                                       ->orWhere(["like", "instituicao", $search]);
+                        ->orWhere(["like", "nome", $search])
+                        ->orWhere(["like", "username", $search])
+                        ->orWhere(["like", "email", $search])
+                        ->orWhere(["like", "cpf", $search])
+                        ->orWhere(["like", "instituicao", $search]);
                 $count = clone $table;
                 $pages = new Pagination([
                     "pageSize" => 1,
@@ -78,13 +143,13 @@ class UsuarioController extends Controller {
                         ->offset($pages->offset)
                         ->limit($pages->limit)
                         ->all();
-            }else{
+            } else {
                 $form->getErrors();
             }
-        }else{
+        } else {
             $table = Usuario::find();
             $count = clone $table;
-            $pages =  new Pagination([
+            $pages = new Pagination([
                 "pageSize" => 1,
                 "totalCount" => $count->count(),
             ]);
@@ -93,27 +158,80 @@ class UsuarioController extends Controller {
                     ->limit($pages->limit)
                     ->all();
         }
-        return $this->render("listar",["model"=>$model, "form"=>$form, "search"=>$search, "pages"=>$pages]);
+        return $this->render("listar", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages]);
     }
-   
-    public function actionDelete(){
-        if(Yii::$app->request->post()){
+
+    public function actionDelete() {
+        if (Yii::$app->request->post()) {
             $id_usuario = Html::encode($_POST["id_usuario"]);
-                if((int) $id_usuario){
-                    if(Usuario::deleteAll("id=:id_usuario",[":id_usuario" => $id_usuario])){
-                        echo "Usuário excluido com sucesso! ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/listar")."'>";
-                    }else{
-                        echo "Erro ao excluir Usuário, tente novamente ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/listar")."'>";
-                    }
-                }else{
+            if ((int) $id_usuario) {
+                if (Usuario::deleteAll("id=:id_usuario", [":id_usuario" => $id_usuario])) {
+                    echo "Usuário excluido com sucesso! ...";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
+                } else {
                     echo "Erro ao excluir Usuário, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/listar")."'>";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
                 }
-        }else{
+            } else {
+                echo "Erro ao excluir Usuário, tente novamente ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
+            }
+        } else {
             return $this->redirect(["usuario/listar"]);
         }
     }
     
+  public function actionEditar(){
+        $model = new FormUsuarioUploadAdmin;
+        $msg = null;
+        //Exibir os dados pegando do GET
+         if(Yii::$app->request->get("id_usuario")){
+            $id_usuario = Html::encode($_GET['id_usuario']);
+            if((int) $id_usuario){
+                $table = Usuario::findOne($id_usuario);
+                if($table){
+                    $model->id = $table->id;
+                    $model->username = $table->username;
+                    $model->nome = $table->nome;
+                    $model->cpf = $table->cpf;
+                    $model->email = $table->email;
+                    $model->endereco = $table->endereco;
+                    $model->instituicao = $table->instituicao;
+                    $model->role = $table->role;
+                }else{
+                     return $this->redirect(["usuario/listar"]);
+                }
+            }  else {
+                return $this->redirect(["usuario/listar"]);
+            }
+        }else{
+            return $this->redirect(["usuario/listar"]);
+        }
+        // Fazer a alteração dos dados 
+        
+        if($model->load(Yii::$app->request->post())){
+            if($model->validate()){
+                $table = Usuario::findOne($model->id);
+                if($table){
+                    $table->username = $model->username;
+                    $table->nome = $model->nome; 
+                    $table->cpf = $model->cpf;
+                    $table->email = $model->email;
+                    $table->endereco = $model->endereco;
+                    $table->instituicao = $model->instituicao;
+                    $table->role = $model->role;
+                    if($table->update()){
+                        $msg = "Registro atualizado com sucesso!";
+                    } else {
+                        $msg = "Registro não pode ser atualizado 1"; //aqui
+                    }
+                }else{
+                    $msg = "Registro selecionado não encontrado! 2";
+                }
+            }else{
+                $model->getErrors();
+            }
+        }
+        return $this->render("editar",["msg"=>$msg, "model"=>$model]);
+    }
 }

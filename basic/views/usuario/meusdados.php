@@ -1,11 +1,10 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
 <!--<a href="<? = Url::toRoute("site/listar")?>">Cadastro de Usuário</a>-->
-<h1>Cadastro de Usuário</h1>
+<h1>Meus dados</h1>
 <?php if($msg != null){ ?>
     <div class="alert alert-info" ><?=$msg?></div>
 <?php }?>
@@ -14,21 +13,22 @@ $form = ActiveForm::begin(
                 ["method" => "post",
                     "enableClientValidation" => true]);
 ?>
+<?= $form->field($model, "id")->input("hidden")->label(false)?>
 
 <div class="form-group">
 <?= $form->field($model, "nome")->input("text"); ?>
 </div>
 
 <div class="form-group">
-<?= $form->field($model, "username")->input("text"); ?>
+<?= $form->field($model, "username")->input("text", ['readonly' => true]); ?>
 </div>
 
 <div class="form-group">  
- <?= $form->field($model, "email")->input("email"); ?> 
+ <?= $form->field($model, "email")->input("email", ['readonly' => true]); ?> 
 </div>
 
 <div class="form-group">
-<?= $form->field($model, "cpf")->input("text"); ?>
+<?= $form->field($model, "cpf")->input("text", ['readonly' => true]); ?>
 </div>
 
 <div class="form-group">
@@ -46,9 +46,6 @@ $form = ActiveForm::begin(
 <div class="form-group">
 <?= $form->field($model, "confsenha")->input("password"); ?>
 </div>
-
-
-
-<?= Html::submitButton("Enviar", ["class" => "btn btn-primary"]);?>
+<?= Html::submitButton("Atualizar", ["class" => "btn btn-primary"]);?>
 
 <?php $form->end();?>
