@@ -94,10 +94,10 @@ glyphicon glyphicon-cog"></i></a>
                                             <h4 class='modal-title' id='myModalLabel'>Excluir registro!</h4>
                                         </div>
                                         <div class='modal-body'>
-                                            <p>Deseja realmente excluir o registro deste evento: <?= $row->descricao?> <?= $row->local_acontecimento?> ?</p>    
+                                            <p>Deseja realmente excluir o registro deste acontecimento: <?= $row->descricao?> <?= $row->local_acontecimento?> ?</p>    
                                         </div>
                                         <div class='modal-footer'>
-                                            <?= Html::beginForm(Url::toRoute("evento/delete"), "POST") ?>
+                                            <?= Html::beginForm(Url::toRoute("acontecimento/delete"), "POST") ?>
                                                 <input type="hidden" name="id" value="<?= $row->id?>">
                                                 <button type="submit" class="btn btn-primary">Excluir</button>
                                             <?= Html::endForm()?>

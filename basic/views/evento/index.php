@@ -35,7 +35,6 @@ $f = ActiveForm::begin([
         <th>Data Fim</th>
         <th></th>
         <th></th>
-                <th></th>
 
     </tr>
     <?php foreach ($model as $row): ?>
@@ -44,12 +43,18 @@ $f = ActiveForm::begin([
             <td><?= $row->local_evento ?></td>
             <td><?= $row->data_inicio?></td>
             <td><?= $row->data_fim ?></td>
-            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>">Editar</a></td>
-            <td><a href="<?= Url::toRoute(["acontecimento/index","id"=>$row->id, "descricao"=>$row->descricao])?>">Acontecimentos</a></td>
+            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
+glyphicon glyphicon-cog"></i></a>
+                            <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
 
-            <td>
-                <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>">Excluir</a>
             </td>
+            <td><?= Html::beginForm(Url::toRoute("acontecimento/index"), "POST") ?>
+                                                <input type="hidden" name="id" value="<?= $row->id?>">
+                                                <button type="submit" class="btn btn-primary">Acontecimentos</button>
+                                            <?= Html::endForm()?></td>
+
+           
+            
                     <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
                                 <div class='modal-dialog' role='document'>
                                     <div class='modal-content'>

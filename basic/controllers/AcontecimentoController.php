@@ -20,9 +20,16 @@ use app\models\FormAcontecimento;
 
 class AcontecimentoController extends Controller {
 
-    public function actionIndex($id = '') {
+    public function actionIndex() {
         $form = new SearchAcontecimento();
         $search = null;
+        if (Yii::$app->request->post()) {
+            $id = Html::encode($_POST["id"]);
+        }else{
+                        echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+
+        }
         if ((int) $id) {
             if (Evento::findOne($id)) {
                 // listando acontecimento
@@ -122,16 +129,16 @@ class AcontecimentoController extends Controller {
         if (Yii::$app->request->post()) {
             $id = Html::encode($_POST["id"]);
             if ((int) $id) {
-                if (Evento::deleteAll("id=:id", [":id" => $id])) {
+                if (Acontecimento::deleteAll("id=:id", [":id" => $id])) {
                     echo "Registro excluido com sucesso! ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("acontecimento/index") . "'>";
                 } else {
                     echo "Erro ao excluir Registro, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("acontecimento/index") . "'>";
                 }
             } else {
                 echo "Erro ao excluir Registro, tente novamente ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("acontecimento/index") . "'>";
             }
         } else {
             return $this->redirect(["evento/index"]);
