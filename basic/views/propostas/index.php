@@ -11,7 +11,7 @@ use yii\data\Pagination;
 use yii\widgets\LinkPager;
 $f = ActiveForm::begin([
             "method" => "get",
-            "action" => Url::toRoute("evento/index"),
+            "action" => Url::toRoute("propostas/index"),
             "enableClientValidation" => true,
         ])
 ?>
@@ -25,33 +25,27 @@ $f = ActiveForm::begin([
 
 
 
-<h3>Lista de Eventos</h3>
+<h3>Minhas Propostas</h3>
 
 <table class="table table-bordered">
     <tr>
         <th>Descrição</th>
-        <th>Local do Evento</th>
-        <th>Data Inicio</th>
-        <th>Data Fim</th>
-        <th></th>
+        <th>Status</th>
+        <th>Tipo</th>
         <th></th>
 
     </tr>
     <?php foreach ($model as $row): ?>
         <tr>
             <td><?= $row->descricao ?></td>
-            <td><?= $row->local_evento ?></td>
-            <td><?= $row->data_inicio?></td>
-            <td><?= $row->data_fim ?></td>
-            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
+            <td><?= $row->status ?></td>
+            <td><?= $row->tipo?></td>
+            <td><a href="<?= Url::toRoute(["propostas/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
 glyphicon glyphicon-cog"></i></a>
                             <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
 
             </td>
-            <td><?= Html::beginForm(Url::toRoute("acontecimento/index"), "GET") ?>
-                                                <input type="hidden" name="id" value="<?= $row->id?>">
-                                                <button type="submit" class="btn btn-primary">Acontecimentos</button>
-                                            <?= Html::endForm()?></td>
+         
 
            
             
@@ -63,10 +57,10 @@ glyphicon glyphicon-cog"></i></a>
                                             <h4 class='modal-title' id='myModalLabel'>Excluir registro!</h4>
                                         </div>
                                         <div class='modal-body'>
-                                            <p>Deseja realmente excluir o registro deste evento: <?= $row->descricao?> <?= $row->local_evento?> ?</p>    
+                                            <p>Deseja realmente excluir o registro desta proposta: <?= $row->descricao?> <?= $row->tipo?> ?</p>    
                                         </div>
                                         <div class='modal-footer'>
-                                            <?= Html::beginForm(Url::toRoute("evento/delete"), "POST") ?>
+                                            <?= Html::beginForm(Url::toRoute("propostas/delete"), "POST") ?>
                                                 <input type="hidden" name="id" value="<?= $row->id?>">
                                                 <button type="submit" class="btn btn-primary">Excluir</button>
                                             <?= Html::endForm()?>
@@ -76,7 +70,7 @@ glyphicon glyphicon-cog"></i></a>
                     </div>
             </tr>
 <?php endforeach; ?>
-            <tr><td><a href="<?= Url::toRoute("evento/cadastrar") ?>">Adicionar um novo Evento</a><td></td><td></td><td></td><td></td><td></td>
+            <tr><td><a href="<?= Url::toRoute("propostas/cadastrar") ?>">Adicionar uma nova Proposta</a><td></td><td></td><td></td>
 </td></tr>
 </table>
 
