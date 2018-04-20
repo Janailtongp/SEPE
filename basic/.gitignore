@@ -3,6 +3,7 @@
 
 # netbeans project files
 nbproject
+nbproject/private/private.xml
 
 # zend studio for eclipse project files
 .buildpath
