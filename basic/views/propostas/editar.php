@@ -3,9 +3,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
-<a href="<?= Url::toRoute(["acontecimento/index","id"=>Html::encode($_GET['id_evento'])])?>">Listar Acontecimentos</a>
-<h1>Editar Acontecimento <?= Html::encode($_GET['descricao'])?> ...</h1>
-<div class="alert alert-sucess" role="alert"><?=$msg?></div>
+<a href="<?= Url::toRoute("propostas/index")?>">Listar Propostas</a>
+<h1>Editar Proposta <?= Html::encode($_GET['descricao'])?> ...</h1>
+<div class="alert alert-primary" role="alert"><?=$msg?></div>
 <?php
 $form = ActiveForm::begin(
                 ["method" => "post",
@@ -17,21 +17,12 @@ $form = ActiveForm::begin(
 <?= $form->field($model, "descricao")->input("text"); ?>
 </div>
 
-<div class="form-group">
-<?= $form->field($model, "ministrante")->input("text"); ?>
-</div>
-<div class="form-group">
-<?= $form->field($model, "local_acontecimento")->input("text"); ?>
-</div>
 <?= $form->field($model, 'tipo')->dropDownList(
 			['Palestra' => 'Palestra', 'Minicurso'=> 'Minicurso', 'Mesa redonda'=> 'Mesa redonda']
 			); ?> 
 <?= $form->field($model, 'status')->dropDownList(
-			['Aberto' => 'Aberto', 'Fechado'=> 'Fechado']
+			['Aprovado' => 'Aprovado', 'Não Aprovado'=> 'Não Aprovado']
 			); ?> 
-<?= $form->field($model, 'data_inicio')->input("text"); ?>
-<?= $form->field($model, 'data_fim')->input("text"); ?>
-
 
 
 <?= Html::submitButton("Atualizar", ["class" => "btn btn-primary"]);?>

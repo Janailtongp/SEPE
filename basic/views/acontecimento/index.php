@@ -34,6 +34,8 @@ $f = ActiveForm::begin([
 <div class="form-group">
     <?= $f->field($form, "q")->input("search") ?>
 </div>
+<input type="hidden" name="id" value="<?= $id?>">
+
 <?= Html::submitButton("Buscar", ["class" => "btn btn-primary"]) ?>
 
 <?php $f->end() ?>
@@ -81,7 +83,7 @@ $f = ActiveForm::begin([
             ?>
             <td><?= $row->status ?></td>
 
-            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
+            <td><a href="<?= Url::toRoute(["acontecimento/editar","id"=>$row->id, "descricao"=>$row->descricao,"id_evento"=>$id])?>"><i class="
 glyphicon glyphicon-cog"></i></a>
            
                 <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
@@ -94,11 +96,13 @@ glyphicon glyphicon-cog"></i></a>
                                             <h4 class='modal-title' id='myModalLabel'>Excluir registro!</h4>
                                         </div>
                                         <div class='modal-body'>
-                                            <p>Deseja realmente excluir o registro deste evento: <?= $row->descricao?> <?= $row->local_acontecimento?> ?</p>    
+                                            <p>Deseja realmente excluir o registro deste acontecimento: <?= $row->descricao?> <?= $row->local_acontecimento?> ?</p>    
                                         </div>
                                         <div class='modal-footer'>
-                                            <?= Html::beginForm(Url::toRoute("evento/delete"), "POST") ?>
+                                            <?= Html::beginForm(Url::toRoute("acontecimento/delete"), "POST") ?>
                                                 <input type="hidden" name="id" value="<?= $row->id?>">
+                                                <input type="hidden" name="id_evento" value="<?= $id?>">
+
                                                 <button type="submit" class="btn btn-primary">Excluir</button>
                                             <?= Html::endForm()?>
                                         </div>
@@ -107,7 +111,7 @@ glyphicon glyphicon-cog"></i></a>
                     </div>
             </tr>
 <?php endforeach; ?>
-            <tr><td><a href="<?= Url::toRoute("acontecimento/cadastrar") ?>"><i class="glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <tr><td><a href="<?= Url::toRoute(["acontecimento/cadastrar","id_evento"=>$id]) ?>"><i class="glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
 </td></tr>
 </table>
 

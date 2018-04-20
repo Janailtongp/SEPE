@@ -27,7 +27,6 @@ class FormAcontecimento extends model {
             ['data_fim', 'required', 'message' => 'Campo obrigatório.'],
             ['status','required', 'message' => 'Campo obrigatório.'],
             ['tipo','required', 'message' => 'Campo obrigatório.'],
-            ['id_evento', 'required', 'message' => 'Campo obrigatório.'],
             ['ministrante','required', 'message' => 'Campo obrigatório.'],
             ['ministrante', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
             ];

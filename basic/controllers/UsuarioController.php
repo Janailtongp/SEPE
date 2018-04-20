@@ -234,4 +234,46 @@ class UsuarioController extends Controller {
         }
         return $this->render("editar",["msg"=>$msg, "model"=>$model]);
     }
+    public function behaviors(){
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['listar','excluir', "meusdados","editar","index"],
+                'rules' => [
+                    [
+                        'actions' =>['listar','excluir', "meusdados","editar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserAdmin(Yii::$app->user->identity->id); 
+                        },
+                    ],
+                    [
+                        'actions' =>['listar',"meusdados","editar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserChefe(Yii::$app->user->identity->id); 
+                        },  
+                    ],
+                    [
+                        'actions' =>["meusdados","index"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserSimple(Yii::$app->user->identity->id); 
+                        },  
+                    ],            
+                ],                
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+   }
+    
+    
 }

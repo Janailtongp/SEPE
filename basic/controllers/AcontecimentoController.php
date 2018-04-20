@@ -20,9 +20,16 @@ use app\models\FormAcontecimento;
 
 class AcontecimentoController extends Controller {
 
-    public function actionIndex($id = '') {
+    public function actionIndex() {
         $form = new SearchAcontecimento();
         $search = null;
+        if (Yii::$app->request->get()) {
+            $id = Html::encode($_GET["id"]);
+        }else{
+                        echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+
+        }
         if ((int) $id) {
             if (Evento::findOne($id)) {
                 // listando acontecimento
@@ -39,7 +46,8 @@ class AcontecimentoController extends Controller {
                                 ->orWhere(["like", "local_acontecimento", $search])
                                 ->orWhere(["like", "data_inicio", $search])
                                 ->orWhere(["like", "data_fim", $search])
-                                ->orWhere(["like", "status", $search]);
+                                ->orWhere(["like", "status", $search])
+                                ->andWhere(array('id_evento' => $id));
                         $count = clone $table;
                         $pages = new Pagination([
                             "pageSize" => 4,
@@ -67,7 +75,7 @@ class AcontecimentoController extends Controller {
                             ->limit($pages->limit)
                             ->all();
                 }
-                return $this->render("index", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages]);
+                return $this->render("index", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages,"id"=>$id]);
             } else {
                 echo "Erro, tente novamente ... 3";
                 echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
@@ -80,6 +88,24 @@ class AcontecimentoController extends Controller {
 
     public function actionCadastrar() {
         //instanciando model do formulario com as regras
+         if (Yii::$app->request->get()) {
+            $id_evento = Html::encode($_GET["id_evento"]);
+        }else{
+                        echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+
+        }
+        if ((int) $id_evento) {
+            if (Evento::findOne($id_evento)) {
+            }else{
+                echo "Erro ao encontrar evento 3!, tente novamente ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+            }
+        }else{
+             echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+        }
+            
         $model = new FormAcontecimento();
         $msg = null;
         if ($model->load(Yii::$app->request->post())) {
@@ -96,7 +122,7 @@ class AcontecimentoController extends Controller {
                 $table->id_usuario = Yii::$app->user->identity->id;
                 //$table->id_usuario = $model->id_usuario;
                 $table->status = $model->status;
-                $table->id_evento = $model->id_evento;
+                $table->id_evento = $id_evento;
 
                 if ($table->insert()){
                     $msg = "Acontecimento cadastrado com sucesso :D";
@@ -115,14 +141,18 @@ class AcontecimentoController extends Controller {
                 $model->getErrors();
             }
         }
-        return $this->render("cadastrar", ["model" => $model, "msg" => $msg]);
-    }
-
+        return $this->render("cadastrar", ["model" => $model, "msg" => $msg,"id_evento"=>$id_evento]);
+     }
+    
+    
+     
+    
     public function actionDelete() {
         if (Yii::$app->request->post()) {
             $id = Html::encode($_POST["id"]);
+            $id_evento=Html::encode($_POST["id_evento"]);
             if ((int) $id) {
-                if (Evento::deleteAll("id=:id", [":id" => $id])) {
+                if (Acontecimento::deleteAll("id=:id", [":id" => $id])) {
                     echo "Registro excluido com sucesso! ...";
                     echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
                 } else {
@@ -139,48 +169,61 @@ class AcontecimentoController extends Controller {
     }
 
     public function actionEditar() {
-        $model = new FormEvento;
+        $model = new FormAcontecimento;
         $msg = null;
-        if ($model->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->get("id")) {
+            $id = Html::encode($_GET['id']);
+            $id_evento = Html::encode($_GET['id_evento']);
+
+            if ((int) $id) {
+                $table = Acontecimento::findOne($id);
+                if ($table){
+                    $model->id = $table->id;
+                    $model->descricao = $table->descricao;
+                    $model->local_acontecimento = $table->local_acontecimento;
+                    $model->ministrante = $table->ministrante;  
+                    $model->data_inicio = $table->data_inicio;
+                    $model->data_fim = $table->data_fim;
+                } else {
+                    return $this->redirect(["acontecimento/index","id"=>$id_evento]);
+                }
+            } else {
+                return $this->redirect(["acontecimento/index","id"=>$id_evento]);
+            }
+        } else {
+            return $this->redirect(["acontecimento/index","id"=>$id_evento]);
+        }
+        
+        
+        
+        if ($model->load(Yii::$app->request->post())){
             if ($model->validate()) {
-                $table = Evento::findOne($model->id);
+                $table = Acontecimento::findOne($model->id);
                 if ($table) {
-                    $table->descricao = $model->descricao;
-                    $table->local_evento = $model->local_evento;
+                  $table->descricao = $model->descricao;
+                  $table->local_acontecimento = $model->local_acontecimento;
+                   $table->ministrante = $model->ministrante;
+                   $table->tipo = $model->tipo;
+                   $table->status= $model->status;
+                   $table->ministrante = $model->ministrante;
+
                     $table->data_inicio = $model->data_inicio;
                     $table->data_fim = $model->data_fim;
+                    
                     if ($table->update()) {
-                        $msg = "Registro atualizado com sucesso!";
+                        $msg = "Nova:".$model->descricao;
                     } else {
-                        $msg = "Registro não pode ser atualizado";
+                        $msg = "Registro não pode ser atualizado".$table->id;
                     }
                 } else {
-                    $msg = "Registro selecionado não encontrado!";
+                    $msg = "Registro selecionado não encontrado!".$table->id;
                 }
             } else {
                 $model->getErrors();
             }
         }
 
-        if (Yii::$app->request->get("id")) {
-            $id = Html::encode($_GET['id']);
-            if ((int) $id) {
-                $table = Evento::findOne($id);
-                if ($table) {
-                    $model->id = $table->id;
-                    $model->descricao = $table->descricao;
-                    $model->local_evento = $table->local_evento;
-                    $model->data_inicio = $table->data_inicio;
-                    $model->data_fim = $table->data_fim;
-                } else {
-                    return $this->redirect(["evento/index"]);
-                }
-            } else {
-                return $this->redirect(["evento/index"]);
-            }
-        } else {
-            return $this->redirect(["evento/index"]);
-        }
+        
         return $this->render("editar", ["msg" => $msg, "model" => $model]);
     }
 

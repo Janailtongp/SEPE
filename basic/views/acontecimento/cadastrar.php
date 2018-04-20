@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
 <h2>Cadastrar Acontecimento</h2>
 <hr>
-<a href="<?= Url::toRoute("evento/index")?>">Listar Acontecimentos</a>
+<a href="<?= Url::toRoute(["acontecimento/index","id"=>$id_evento])?>">Listar Acontecimentos</a>
 
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 
@@ -23,7 +23,6 @@ use yii\helpers\Url;
 <?= $form->field($model, 'status')->dropDownList(
 			['Aberto' => 'Aberto', 'Fechado'=> 'Fechado']
 			); ?> 
-<?= $form->field($model, 'id_evento')->input("text"); ?>
 <?= $form->field($model, 'data_inicio')->input("text"); ?>
 <?= $form->field($model, 'data_fim')->input("text"); ?>
 
