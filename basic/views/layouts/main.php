@@ -39,6 +39,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Início', 'url' => ['/site/index']],
+             ['label' => 'Minhas Inscrições', 'url' => ['/evento/inscricoes']],
             ['label' => 'Sobre', 'url' => ['/site/about']],
             ['label' => 'Contato', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
