@@ -53,7 +53,7 @@ $this->params['Participante'][] = $this->title;
                                         </div>
                                         <div class='modal-footer'>
                                             <?= Html::beginForm(Url::toRoute("evento/deixarevento"), "POST") ?>
-                                                <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id']?>">
+                                                <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id_inscricao']?>">
                                                 <button type="submit" class="btn btn-primary">Sair</button>
                                             <?= Html::endForm()?>
                                         </div>

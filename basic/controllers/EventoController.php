@@ -214,7 +214,7 @@ class EventoController extends Controller {
         
         public function Listar_meus_eventos($idUSuario){
            
-                $sql = (new \yii\db\Query())->select('e.local_evento local_evento,e.descricao descricao,e.data_inicio data_inicio,e.data_fim data_fim,e.id id')->from('evento e, inscricao_evento i')
+                $sql = (new \yii\db\Query())->select('e.local_evento local_evento,e.descricao descricao,e.data_inicio data_inicio,e.data_fim data_fim,e.id id,i.id id_inscricao')->from('evento e, inscricao_evento i')
                         ->where('e.id = i.id_evento')->andWhere('i.id_participante=:id', array(':id'=>$idUSuario))->all();
                 return $sql;
         }
