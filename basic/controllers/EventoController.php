@@ -211,7 +211,6 @@ class EventoController extends Controller {
         
         return $this->render("inscricoes",["model"=>$model, "form"=>$form, "search"=>$search, "pages"=>$pages,"t"=>$inscricoes]);
         }
-<<<<<<< HEAD
         
         public function Listar_meus_eventos($idUSuario){
            
@@ -251,10 +250,7 @@ class EventoController extends Controller {
         
         
     
-    
-   
-=======
->>>>>>> 87d1b8cf25aecc3c561209804b1663c6d26fa66d
+
    }
    
    
