@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
-<a href="<?= Url::toRoute("propostas/index")?>">Listar Propostas</a>
+<a href="<?= Url::toRoute("usuario/index")?>">Listar Propostas</a>
 <h1>Editar Proposta <?= Html::encode($_GET['descricao'])?> ...</h1>
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 <?php
@@ -19,9 +19,6 @@ $form = ActiveForm::begin(
 
 <?= $form->field($model, 'tipo')->dropDownList(
 			['Palestra' => 'Palestra', 'Minicurso'=> 'Minicurso', 'Mesa redonda'=> 'Mesa redonda']
-			); ?> 
-<?= $form->field($model, 'status')->dropDownList(
-			['Aprovado' => 'Aprovado', 'Não Aprovado'=> 'Não Aprovado']
 			); ?> 
 
 

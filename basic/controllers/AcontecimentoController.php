@@ -22,7 +22,7 @@ use app\models\Inscricao_Acontecimento;
 class AcontecimentoController extends Controller {
      public function Listar_meus_acontecimentos($idUSuario,$id_evento){
            
-                $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a, inscricao_acontecimento i,evento e,usuario u')
+                $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id,i.id id_inscricao')->from('acontecimento a, inscricao_acontecimento i,evento e,usuario u')
                         ->where('a.id = i.id_acontecimento')->andWhere('a.id_evento=e.id')
                         ->andWhere('e.id=:id', array(':id'=>$id_evento))
                         ->andWhere('i.id_participante=:id', array(':id'=>$idUSuario))->andWhere(('a.id_usuario = u.id'))->all();
@@ -40,6 +40,8 @@ class AcontecimentoController extends Controller {
        public function actionInscrever() {
         if(Yii::$app->request->post()){
             $id = Html::encode($_POST["id"]);
+             $id_evento = Html::encode($_POST['id_evento']);
+            $descricao = Html::encode($_POST['descricao']);
                 if((int) $id){
 
                    $inscricao=  new Inscricao_Acontecimento();
@@ -48,20 +50,23 @@ class AcontecimentoController extends Controller {
                    $inscricao->status="Aprovada";
                       if($inscricao->insert()){
                         echo "Sua inscrição foi realizada com sucesso no acontecimento!";
-                      echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/indexacontecimento")."'>";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                           
                       }
                       }
 
                 }else{
                     echo "Error ao se inscrever, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                 }
     
     } 
     public function actionIndex() {
         $form = new SearchAcontecimento();
         $search = null;
+        $usuarios = (new \yii\db\Query())->select('u.nome usuario,u.id id')->from('usuario u')->all();
+        $eventos = (new \yii\db\Query())->select('e.descricao evento,e.id id')->from('evento e')->all();
+
         if (Yii::$app->request->get()) {
             $id = Html::encode($_GET["id"]);
         }else{
@@ -114,7 +119,7 @@ class AcontecimentoController extends Controller {
                             ->limit($pages->limit)
                             ->all();
                 }
-                return $this->render("index", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages,"id"=>$id]);
+                return $this->render("index", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages,"id"=>$id,"usuarios"=>$usuarios,"eventos"=>$eventos]);
             } else {
                 echo "Erro, tente novamente ... 3";
                 echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
@@ -265,5 +270,28 @@ class AcontecimentoController extends Controller {
         
         return $this->render("editar", ["msg" => $msg, "model" => $model]);
     }
+     public function actionDeixaracontecimento() {
+        if (Yii::$app->request->post()) {
+            $id_acontecimento = Html::encode($_POST['id_inscricao']);
+            $id_evento = Html::encode($_POST['id_evento']);
+            $descricao = Html::encode($_POST['descricao']);
 
+            $id_usuario = Yii::$app->user->identity->id;
+            if ((int) $id_usuario) {
+                if (Inscricao_Acontecimento::deleteAll("id=:id_acontecimento AND id_participante=:id_usuario",
+                                    [":id_acontecimento" => $id_acontecimento,":id_usuario"=>$id_usuario])) {
+                    echo "Você deixou o acontecimento com sucesso! ...";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+                } else {
+                    echo "Erro ao deixar Evento, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='3; " .Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+                }
+            } else {
+                echo "Erro ao deixar Evento, tente novamente ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]). "'>";
+            }
+        } else {
+            return $this->redirect(["usuario/index"]);
+        }
+    }
 }

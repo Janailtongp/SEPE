@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
 <h2>Cadastrar Proposta</h2>
 <hr>
-<a href="<?= Url::toRoute("propostas/index")?>">Listar Propostas</a>
+<a href="<?= Url::toRoute("usuario/index")?>">Tela Inicial</a>
 
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 
@@ -15,9 +15,7 @@ use yii\helpers\Url;
 <?= $form->field($model, 'tipo')->dropDownList(
 			['Palestra' => 'Palestra', 'Minicurso'=> 'Minicurso', 'Mesa redonda'=> 'Mesa redonda']
 			); ?> 
-<?= $form->field($model, 'status')->dropDownList(
-			['Aprovado' => 'Aprovado', 'Não Aprovado'=> 'Não Aprovado']
-			); ?> 
+
 
 <div class='form-group'>
     <?= HTML::submitButton('Cadastrar',['class'=>'btn btn-primary'])?>

@@ -53,8 +53,11 @@ $this->params['Participante'][] = $this->title;
                                             <p>Deseja realmente sair deste acontecimento? <?= $model[$i]['descricao']?> ?</p>    
                                         </div>
                                         <div class='modal-footer'>
-                                            <?= Html::beginForm(Url::toRoute("evento/deixarevento"), "POST") ?>
-                                                <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id']?>">
+                                            <?= Html::beginForm(Url::toRoute("acontecimento/deixaracontecimento"), "POST") ?>
+                                                <input type="hidden" name="id_evento" value="<?= $id?>">
+                                                <input type="hidden" name="descricao" value="<?= $descricao?>">
+
+                                                <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id_inscricao']?>">
                                                 <button type="submit" class="btn btn-primary">Sair</button>
                                             <?= Html::endForm()?>
                                         </div>
@@ -105,6 +108,8 @@ $this->params['Participante'][] = $this->title;
                           echo "<td>".$model2[$i]['data_fim'] ."</td>";
                           echo " <td>".$model2[$i]['usuario']." </td>";
                         echo  "<td>".Html::beginForm(Url::toRoute("acontecimento/inscrever"), "POST")."
+                               <input type='hidden' name='id_evento' value='". $id."'>
+                                                <input type='hidden' name='descricao' value='". $descricao."'>
                                                 <input type='hidden' name='id' value='". $model2[$i]['id']."'>
                                                 <button type='submit' class='btn btn-primary'>Inscrever-se</button>
                                             ".Html::endForm().".</td></tr>";
