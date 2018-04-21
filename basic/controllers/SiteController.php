@@ -73,11 +73,11 @@ class SiteController extends Controller
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             if(User::isUserAdmin(Yii::$app->user->identity->id)){
-                return $this->redirect(["usuario/index"]);
+                return $this->redirect(["usuario/index3"]);
             }else if(User::isUserChefe(Yii::$app->user->identity->id)){
-                return $this->redirect(["chefe/index"]);
+                return $this->redirect(["usuario/index2"]);
             }else{
-                 return $this->redirect(["admin/index"]);
+                 return $this->redirect(["usuario/index"]);
             }
            // return $this->goHome();
         }
@@ -85,9 +85,11 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             if(User::isUserAdmin(Yii::$app->user->identity->id)){
-                return $this->redirect(["usuario/index"]);
+                return $this->redirect(["usuario/index3"]);
+            }else if(User::isUserChefe(Yii::$app->user->identity->id)){
+                return $this->redirect(["usuario/index2"]);
             }else{
-                return $this->redirect(["usuario/index"]);
+                 return $this->redirect(["usuario/index"]);
             }
            // return $this->goBack();
         }

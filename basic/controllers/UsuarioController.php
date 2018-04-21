@@ -19,17 +19,22 @@ use app\models\FormUsuario;
 use app\models\FormUsuarioUpload;
 use app\models\FormUsuarioUploadAdmin;
 use app\models\SearchUsuario;
+use app\controllers\EventoController;
 
 class UsuarioController extends Controller {
 
     public function actionIndex() {
-        if (isset(Yii::$app->user->identity->id)) {
-            $idLogado = Yii::$app->user->identity->id;
-        } else {
-            $idLogado = "Nineguem logado no momento";
-        }
-        return $this->render('index', ["idLogado" => $idLogado]);
+        $model = EventoController::Listar_meus_eventos(Yii::$app->user->identity->id);
+        $model2 = EventoController::Outros_eventos(Yii::$app->user->identity->id);
+        return $this->render('index', ["model" => $model,"model2"=>$model2]);
     }
+    
+     public function actionIndex2() {
+            return $this->render('index2');
+     }
+     public function actionIndex3() {
+            return $this->render('index3');
+     }
 
     public function actionMeusdados(){
        // Exibir os dados da pessoa logada com ID -> Yii::$app->user->identity->id;
@@ -234,14 +239,17 @@ class UsuarioController extends Controller {
         }
         return $this->render("editar",["msg"=>$msg, "model"=>$model]);
     }
+    
+    
+    
     public function behaviors(){
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['listar','excluir', "meusdados","editar","index"],
+                'only' => ['listar','excluir', "meusdados","editar","index","index2","index3"],
                 'rules' => [
                     [
-                        'actions' =>['listar','excluir', "meusdados","editar"],
+                        'actions' =>['listar','excluir', "meusdados","editar","index3"],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' =>function($rule, $action){
@@ -249,7 +257,7 @@ class UsuarioController extends Controller {
                         },
                     ],
                     [
-                        'actions' =>['listar',"meusdados","editar"],
+                        'actions' =>['listar',"meusdados","editar","index2"],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' =>function($rule, $action){
@@ -257,7 +265,7 @@ class UsuarioController extends Controller {
                         },  
                     ],
                     [
-                        'actions' =>["meusdados","index"],
+                        'actions' =>["meusdados","index",],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' =>function($rule, $action){

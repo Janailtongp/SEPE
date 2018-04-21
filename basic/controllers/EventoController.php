@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\SearchEvento;
+use app\models\Inscricao_Evento;
 
 use yii\helpers\Html;
 use yii\data\Pagination;
@@ -13,8 +14,6 @@ use yii\helpers\Url;
 use app\models\Evento;
 use app\models\User;
 use app\models\FormEvento;
-
-
 
 
 class EventoController extends Controller {
@@ -85,6 +84,28 @@ class EventoController extends Controller {
         return $this->render("cadastrar",["model"=>$cadastroModel, "msg"=>$msg]);
 
     }
+    public function actionInscrever() {
+        if(Yii::$app->request->post()){
+            $id = Html::encode($_POST["id"]);
+                if((int) $id){
+
+                   $inscricao=  new Inscricao_Evento();
+                   $inscricao->id_evento=$id;
+                   $inscricao->id_participante=Yii::$app->user->identity->id;
+                   $inscricao->status="Aprovada";
+                      if($inscricao->insert()){
+                        echo "Sua inscrição foi realizada com sucesso!";
+                      echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                          
+                      }
+                      }
+
+                }else{
+                    echo "Error ao se inscrever, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                }
+    
+    }
     public function actionDelete() {
         if(Yii::$app->request->post()){
             $id = Html::encode($_POST["id"]);
@@ -150,6 +171,87 @@ class EventoController extends Controller {
         }
         return $this->render("editar",["msg"=>$msg, "model"=>$model]);
     }
+    public function actionInscricoes() {
+        $form = new SearchEvento;
+        $search = null;
+        $inscricoes=  Inscricao_Evento::find()->where(array("id_participante"=>Yii::$app->user->identity->id));
+      
+        if($form->load(Yii::$app->request->get())){
+            if($form->validate()){
+                $search = Html::encode($form->q);
+                $table = Evento::find()->where(["like", "id", $search])
+                                       ->orWhere(["like", "descricao", $search])
+                                       ->orWhere(["like", "data_inicio", $search])
+                                       ->orWhere(["like", "data_fim", $search])
+                        ->orWhere(["like", "local_evento", $search]);
+                $count = clone $table;
+                $pages = new Pagination([
+                    "pageSize" => 4,
+                    "totalCount" => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+            }else{
+                $form->getErrors();
+            }
+        }else{
+            $table = Evento::find();
+            $count = clone $table;
+            $pages =  new Pagination([
+                "pageSize" => 4,
+                "totalCount" => $count->count(),
+            ]);
+            $model = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+        }
+        
+        return $this->render("inscricoes",["model"=>$model, "form"=>$form, "search"=>$search, "pages"=>$pages,"t"=>$inscricoes]);
+        }
+        
+        public function Listar_meus_eventos($idUSuario){
+           
+                $sql = (new \yii\db\Query())->select('*')->from('evento, inscricao_evento')
+                        ->where('evento.id = inscricao_evento.id_evento')->andWhere('inscricao_evento.id_participante=:id', array(':id'=>$idUSuario))->all();
+                return $sql;
+        }
+        
+        public function Outros_eventos($idUSuario) {
+            //Selecionar todos os eventos Que eu não participo
+            $sql = (new \yii\db\Query())->select('*')->from('evento, inscricao_evento')
+                        ->where('evento.id = inscricao_evento.id_evento')->andWhere('inscricao_evento.id_participante != :id', array(':id'=>$idUSuario))->all();
+                return $sql;
+        }
+        
+        public function actionDeixarevento() {
+        if (Yii::$app->request->post()) {
+            $id_evento = Html::encode($_POST['id_inscricao']);
+            $id_usuario = Yii::$app->user->identity->id;
+            if ((int) $id_usuario) {
+                if (Inscricao_Evento::deleteAll("id=:id_evento AND id_participante=:id_usuario",
+                                    [":id_evento" => $id_evento,":id_usuario"=>$id_usuario])) {
+                    echo "Você deixou o evento com sucesso! ...";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/index") . "'>";
+                } else {
+                    echo "Erro ao deixar Evento, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/index") . "'>";
+                }
+            } else {
+                echo "Erro ao deixar Evento, tente novamente ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
+            }
+        } else {
+            return $this->redirect(["usuario/index"]);
+        }
+    }
+        
+        
+    
+    
+   
    }
    
    

@@ -16,10 +16,10 @@ class FormEvento extends model {
             ['id','integer', 'message'=>'ID incorreto.'],
             ['descricao', 'required', 'message' => 'Campo obrigatório.'],
             ['descricao', 'match', 'pattern' => "/^.{3,200}$/", 'message' => 'Tamanho entre 3 e 200 caracteres.'],
-            ['descricao', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
+            ['descricao', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõç ]+$/i", 'message' => 'Apenas letras.'],
             ['local_evento', 'required', 'message' => 'Campo obrigatório.'],
             ['local_evento', 'match', 'pattern' => "/^.{3,200}$/", 'message' => 'Tamanho entre 3 e 200 caracteres.'],
-            ['local_evento', 'match', 'pattern' => "/^[1-9a-záéíóúñâêôûãõ -°]+$/i", 'message' => 'Apenas letras e números.'],
+            ['local_evento', 'match', 'pattern' => "/^[1-9a-záéíóúñâêôûãõç -°]+$/i", 'message' => 'Apenas letras e números.'],
             ['data_inicio', 'required', 'message' => 'Campo obrigatório.'],
             ['data_fim', 'required', 'message' => 'Campo obrigatório.']
             

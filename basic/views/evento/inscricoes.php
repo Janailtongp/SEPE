@@ -1,7 +1,3 @@
-
-
-
-
 <?php
 
 use yii\helpers\Url;
@@ -24,8 +20,7 @@ $f = ActiveForm::begin([
 
 
 
-
-<h3>Lista de Eventos</h3>
+<h3>Minhas Inscrições</h3>
 
 <table class="table table-bordered">
     <tr>
@@ -34,21 +29,16 @@ $f = ActiveForm::begin([
         <th>Data Inicio</th>
         <th>Data Fim</th>
         <th></th>
-        <th></th>
-        <th></th>
+       
 
     </tr>
-    <?php foreach ($model as $row): ?>
+    <?php foreach ($model as $row){ ?>
         <tr>
             <td><?= $row->descricao ?></td>
             <td><?= $row->local_evento ?></td>
             <td><?= $row->data_inicio?></td>
             <td><?= $row->data_fim ?></td>
-            <td><a href="<?= Url::toRoute(["evento/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
-glyphicon glyphicon-cog"></i></a>
-                            <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
-
-            </td>
+          
             <td><?= Html::beginForm(Url::toRoute("acontecimento/index"), "GET") ?>
                                                 <input type="hidden" name="id" value="<?= $row->id?>">
                                                 <button type="submit" class="btn btn-primary">Acontecimentos</button>
@@ -56,10 +46,7 @@ glyphicon glyphicon-cog"></i></a>
 <?php
 
 ?>
-            <td><?= Html::beginForm(Url::toRoute("evento/inscrever"), "POST") ?>
-                                                <input type="hidden" name="id" value="<?= $row->id?>">
-                                                <button type="submit" class="btn btn-primary">Inscrever-se</button>
-                                            <?= Html::endForm()?></td>
+         
            
             
                     <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
@@ -82,9 +69,8 @@ glyphicon glyphicon-cog"></i></a>
                                 </div>
                     </div>
             </tr>
-<?php endforeach; ?>
-            <tr><td><a href="<?= Url::toRoute("evento/cadastrar") ?>">Adicionar um novo Evento</a><td></td><td></td><td></td><td></td><td></td>
-                <td></td></tr>
+<?php } ?>
+        
 </table>
 
 <?=
