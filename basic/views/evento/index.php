@@ -35,7 +35,6 @@ $f = ActiveForm::begin([
         <th>Data Fim</th>
         <th></th>
         <th></th>
-        <th></th>
 
     </tr>
     <?php foreach ($model as $row): ?>
@@ -56,10 +55,7 @@ glyphicon glyphicon-cog"></i></a>
 <?php
 
 ?>
-            <td><?= Html::beginForm(Url::toRoute("evento/inscrever"), "POST") ?>
-                                                <input type="hidden" name="id" value="<?= $row->id?>">
-                                                <button type="submit" class="btn btn-primary">Inscrever-se</button>
-                                            <?= Html::endForm()?></td>
+     
            
             
                     <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>

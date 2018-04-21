@@ -6,13 +6,17 @@ $this->title = 'Participante';
 $this->params['Participante'][] = $this->title;
 ?>
 <h3>Bem vindo(a) ao sistema SEPE</h3><br/>
-<h4>Aqui você fica por dentro de tudo o que acontece no Seminário de Ensino, Pesquisa e Extensão do CERES-UFRN </h4>
+<h4>Aqui estão todas as atividades que serão realizadas no evento: <?=$descricao ?> </h4>
 
-<a href="<?=Url::toRoute("usuario/index")?>"> Eventos</a><br/>
-<a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
+<a href="<?=Url::toRoute("usuario/index")?>">Voltar ao MENU</a><br/>
+
+<?= Html::beginForm(Url::toRoute("artigo/index"), "GET") ?>
+                     <input type="hidden" name="id_evento" value="<?= $_GET['id']?>">
+                     <button type="submit" class="btn btn-primary">Submeter Artigo</button>
+<?= Html::endForm()?>
 
 <table class="table table-bordered">
-    <caption><h3><b>Acontecimentos do Evento: <?php echo $descricao;?></b></h3></caption>
+    <caption><h3><b>Meus acontecimentos do Evento: <?php echo $descricao;?></b></h3></caption>
             <tr>
          <th>Descrição</th>
         <th>Tipo</th>
@@ -53,8 +57,11 @@ $this->params['Participante'][] = $this->title;
                                             <p>Deseja realmente sair deste acontecimento? <?= $model[$i]['descricao']?> ?</p>    
                                         </div>
                                         <div class='modal-footer'>
-                                            <?= Html::beginForm(Url::toRoute("evento/deixarevento"), "POST") ?>
-                                                <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id']?>">
+                                            <?= Html::beginForm(Url::toRoute("acontecimento/deixaracontecimento"), "POST") ?>
+                                                <input type="hidden" name="id_evento" value="<?= $id?>">
+                                                <input type="hidden" name="descricao" value="<?= $descricao?>">
+
+                                                <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id_inscricao']?>">
                                                 <button type="submit" class="btn btn-primary">Sair</button>
                                             <?= Html::endForm()?>
                                         </div>
@@ -83,10 +90,9 @@ $this->params['Participante'][] = $this->title;
         <th>Usuário</th>
               </tr>
             <?php
-            $tamanho = count($model2);
-            $tamanho2=count($model);
-            if($tamanho > 0){
-                for($i =0; $i<$tamanho; $i++){
+            $tamanho2 = count($model2);
+            if($tamanho2 > 0){
+                for($i =0; $i<$tamanho2; $i++){
                     $ja_me_inscrevi=0;
                     for($j=0;$j<$tamanho2;$j++){
                         if($model[$j]['id']==$model2[$i]['id']){
@@ -105,18 +111,14 @@ $this->params['Participante'][] = $this->title;
                           echo "<td>".$model2[$i]['data_fim'] ."</td>";
                           echo " <td>".$model2[$i]['usuario']." </td>";
                         echo  "<td>".Html::beginForm(Url::toRoute("acontecimento/inscrever"), "POST")."
+                               <input type='hidden' name='id_evento' value='". $id."'>
+                                                <input type='hidden' name='descricao' value='". $descricao."'>
                                                 <input type='hidden' name='id' value='". $model2[$i]['id']."'>
                                                 <button type='submit' class='btn btn-primary'>Inscrever-se</button>
                                             ".Html::endForm().".</td></tr>";
-
-
-
-                    }
+                   }
                 }
             }
-                    ?>
+         ?>
                    
-          
-                
-                
-                    </table>
+</table>

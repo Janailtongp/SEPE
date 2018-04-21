@@ -7,8 +7,6 @@ $this->params['Participante'][] = $this->title;
 ?>
 <h3>Bem vindo(a) ao sistema SEPE</h3><br/>
 <h4>Aqui você fica por dentro de tudo o que acontece no Seminário de Ensino, Pesquisa e Extensão do CERES-UFRN </h4>
-
-<a href="<?=Url::toRoute("evento/index")?>">Eventos Abertos</a><br/>
 <a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
 
 <table class="table table-bordered">
@@ -66,8 +64,6 @@ $this->params['Participante'][] = $this->title;
             }    
             ?>
         </table>
-<br/>
-<br/>
 
 <table class="table table-bordered">
     <caption><h3><b>Outros Eventos</b></h3></caption>
@@ -111,4 +107,66 @@ $this->params['Participante'][] = $this->title;
           
                 
                 
+                    </table>
+<table class="table table-bordered">
+    <caption><h3><b>Minhas Propostas</b></h3></caption>
+            <tr>
+                    <th>Descrição</th>
+                    <th>Tipo</th>
+                    <th></th>
+                    <th></th>
+              </tr>
+            <?php
+            $tamanho = count($model3);
+            if($tamanho > 0){
+                for($i =0; $i<$tamanho; $i++){
+                   
+                        echo "<tr>";
+                        echo "<td>".$model3[$i]['descricao']."</td>";
+                        echo "<td>".$model3[$i]['tipo']."</td>";
+                        echo "<td>".$model3[$i]['status']."</td>";
+                        
+
+
+
+                    
+                    ?>
+                <td><a href="<?= Url::toRoute(["propostas/editar","id"=>$model3[$i]['id'], "descricao"=>$model3[$i]['descricao']])?>"><i class="
+glyphicon glyphicon-cog"></i></a>
+                            <a href="#" data-toggle='modal' data-target="#proposta<?= $model3[$i]['id'] ?>"><i class="glyphicon glyphicon-trash"></i></a>
+
+            </td>
+         
+
+           
+            
+                    <div class='modal fade' id=proposta<?= $model3[$i]['id']?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+                                <div class='modal-dialog' role='document'>
+                                    <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                            <h4 class='modal-title' id='myModalLabel'>Excluir registro!</h4>
+                                        </div>
+                                        <div class='modal-body'>
+                                            <p>Deseja realmente excluir o registro desta proposta: <?= $model3[$i]['descricao']?> <?= $model3[$i]['tipo']?> ?</p>    
+                                        </div>
+                                        <div class='modal-footer'>
+                                            <?= Html::beginForm(Url::toRoute("propostas/delete"), "POST") ?>
+                                                <input type="hidden" name="id" value="<?= $model3[$i]['id']?>">
+                                                <button type="submit" class="btn btn-primary">Excluir</button>
+                                            <?= Html::endForm()?>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+              <?php
+            }
+            }
+            
+                    ?>
+                   
+          
+                
+                 <tr><td><a href="<?= Url::toRoute("propostas/cadastrar") ?>">Adicionar uma nova Proposta</a><td></td><td></td><td></td>
+                </tr>
                     </table>

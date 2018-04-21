@@ -21,13 +21,16 @@ use app\models\FormUsuarioUploadAdmin;
 use app\models\SearchUsuario;
 use app\controllers\EventoController;
 use app\controllers\AcontecimentoController;
+use app\controllers\PropostasController;
+
 use app\models\Evento;
 class UsuarioController extends Controller {
 
     public function actionIndex() {
         $model = EventoController::Listar_meus_eventos(Yii::$app->user->identity->id);
         $model2 = EventoController::Outros_eventos(Yii::$app->user->identity->id);
-        return $this->render('index', ["model" => $model,"model2"=>$model2]);
+        $model3= PropostasController::Minhas_Propostas(Yii::$app->user->identity->id);
+        return $this->render('index', ["model" => $model,"model2"=>$model2,"model3"=>$model3]);
     }
     public function actionIndexacontecimento(){
         if (Yii::$app->request->get()) {
@@ -42,7 +45,7 @@ class UsuarioController extends Controller {
             if (Evento::findOne($id)) {
                 $model = AcontecimentoController::Listar_meus_acontecimentos(Yii::$app->user->identity->id,$id);
                 $model2 = AcontecimentoController::Outros_acontecimentos(Yii::$app->user->identity->id,$id);
-                return $this->render('indexacontecimento', ["model" => $model,"model2"=>$model2,"descricao"=>$descricao]);
+                return $this->render('indexacontecimento', ["model" => $model,"model2"=>$model2,"descricao"=>$descricao,"id"=>$id]);
             }
         }else{
             echo "Erro ao encontrar evento 3!, tente novamente ...";

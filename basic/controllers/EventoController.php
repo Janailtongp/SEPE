@@ -95,14 +95,14 @@ class EventoController extends Controller {
                    $inscricao->status="Aprovada";
                       if($inscricao->insert()){
                         echo "Sua inscrição foi realizada com sucesso!";
-                      echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                      echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
                           
                       }
                       }
 
                 }else{
                     echo "Error ao se inscrever, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
                 }
     
     }
@@ -171,46 +171,7 @@ class EventoController extends Controller {
         }
         return $this->render("editar",["msg"=>$msg, "model"=>$model]);
     }
-    public function actionInscricoes() {
-        $form = new SearchEvento;
-        $search = null;
-        $inscricoes=  Inscricao_Evento::find()->where(array("id_participante"=>Yii::$app->user->identity->id));
-      
-        if($form->load(Yii::$app->request->get())){
-            if($form->validate()){
-                $search = Html::encode($form->q);
-                $table = Evento::find()->where(["like", "id", $search])
-                                       ->orWhere(["like", "descricao", $search])
-                                       ->orWhere(["like", "data_inicio", $search])
-                                       ->orWhere(["like", "data_fim", $search])
-                        ->orWhere(["like", "local_evento", $search]);
-                $count = clone $table;
-                $pages = new Pagination([
-                    "pageSize" => 4,
-                    "totalCount" => $count->count(),
-                ]);
-                $model = $table
-                        ->offset($pages->offset)
-                        ->limit($pages->limit)
-                        ->all();
-            }else{
-                $form->getErrors();
-            }
-        }else{
-            $table = Evento::find();
-            $count = clone $table;
-            $pages =  new Pagination([
-                "pageSize" => 4,
-                "totalCount" => $count->count(),
-            ]);
-            $model = $table
-                    ->offset($pages->offset)
-                    ->limit($pages->limit)
-                    ->all();
-        }
-        
-        return $this->render("inscricoes",["model"=>$model, "form"=>$form, "search"=>$search, "pages"=>$pages,"t"=>$inscricoes]);
-        }
+   
         
         public function Listar_meus_eventos($idUSuario){
            

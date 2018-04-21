@@ -25,53 +25,53 @@ $f = ActiveForm::begin([
 
 
 
-<h3>Minhas Propostas</h3>
+<h3>Propostas</h3>
 
 <table class="table table-bordered">
     <tr>
+        <th>Participante</th>
+
         <th>Descrição</th>
         <th>Status</th>
         <th>Tipo</th>
+        <th></th>
         <th></th>
 
     </tr>
     <?php foreach ($model as $row): ?>
         <tr>
+  <td><?php 
+            $tamanho = count($usuarios);
+            if($tamanho > 0){
+                for($i =0; $i<$tamanho; $i++){
+                    if($usuarios[$i]['id']==$row->id_participante){
+                        $nome_usuario=$usuarios[$i]['usuario'];
+                    }
+                }
+            }
+           echo $nome_usuario;
+                    ?></td>
             <td><?= $row->descricao ?></td>
             <td><?= $row->status ?></td>
             <td><?= $row->tipo?></td>
-            <td><a href="<?= Url::toRoute(["propostas/editar","id"=>$row->id, "descricao"=>$row->descricao])?>"><i class="
-glyphicon glyphicon-cog"></i></a>
-                            <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
-
+            <td><?= Html::beginForm(Url::toRoute("propostas/aprovar"), "POST") ?>
+                                                <input type="hidden" name="id" value="<?= $row->id?>">
+                                                <button type="submit" class="btn btn-success">Aprovar</button>
+                                            <?= Html::endForm()?>
+            </td><td>
+            <?= Html::beginForm(Url::toRoute("propostas/desaprovar"), "POST") ?>
+                                                <input type="hidden" name="id" value="<?= $row->id?>">
+                                                <button type="submit" class="btn btn-danger">Desaprovar</button>
+                                            <?= Html::endForm()?>
             </td>
          
 
            
             
-                    <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
-                                <div class='modal-dialog' role='document'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                                            <h4 class='modal-title' id='myModalLabel'>Excluir registro!</h4>
-                                        </div>
-                                        <div class='modal-body'>
-                                            <p>Deseja realmente excluir o registro desta proposta: <?= $row->descricao?> <?= $row->tipo?> ?</p>    
-                                        </div>
-                                        <div class='modal-footer'>
-                                            <?= Html::beginForm(Url::toRoute("propostas/delete"), "POST") ?>
-                                                <input type="hidden" name="id" value="<?= $row->id?>">
-                                                <button type="submit" class="btn btn-primary">Excluir</button>
-                                            <?= Html::endForm()?>
-                                        </div>
-                                    </div>
-                                </div>
-                    </div>
+              
             </tr>
 <?php endforeach; ?>
-            <tr><td><a href="<?= Url::toRoute("propostas/cadastrar") ?>">Adicionar uma nova Proposta</a><td></td><td></td><td></td>
-</td></tr>
+            
 </table>
 
 <?=

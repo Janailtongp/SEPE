@@ -23,8 +23,8 @@ use yii\helpers\Url;
 <?= $form->field($model, 'status')->dropDownList(
 			['Aberto' => 'Aberto', 'Fechado'=> 'Fechado']
 			); ?> 
-<?= $form->field($model, 'data_inicio')->input("text"); ?>
-<?= $form->field($model, 'data_fim')->input("text"); ?>
+<?= $form->field($model, 'data_inicio')->input("date"); ?>
+<?= $form->field($model, 'data_fim')->input("date"); ?>
 
 <div class='form-group'>
     <?= HTML::submitButton('Cadastrar',['class'=>'btn btn-primary'])?>

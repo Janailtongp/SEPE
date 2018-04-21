@@ -8,7 +8,9 @@ use yii\helpers\Url;
 <?php if($msg != null){ ?>
     <div class="alert alert-info" ><?=$msg?></div>
 <?php }?>
+    <a href="<?=Url::toRoute("usuario/index")?>">Voltar ao MENU</a><br/>
 <?php
+
 $form = ActiveForm::begin(
                 ["method" => "post",
                     "enableClientValidation" => true]);

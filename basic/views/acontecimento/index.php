@@ -13,6 +13,7 @@ $f = ActiveForm::begin([
             "enableClientValidation" => true,
         ])
 ?>
+<a href="<?=Url::toRoute("evento/index")?>">Lista de eventos</a><br/>
 <div class="form-group">
     <?= $f->field($form, "q")->input("search") ?>
 </div>
@@ -39,7 +40,6 @@ $f = ActiveForm::begin([
         <th>Usuário</th>
         <th>Status</th>
 
-        <th></th>
                <th></th>
 
     </tr>
@@ -47,12 +47,33 @@ $f = ActiveForm::begin([
         <tr>
             <td><?= $row->descricao ?></td>
             <td><?= $row->tipo ?></td>
-            <td><?= $row->id_evento?></td>
+            <td><?php 
+            $tamanho = count($eventos);
+            if($tamanho > 0){
+                for($i =0; $i<$tamanho; $i++){
+                    if($eventos[$i]['id']==$row->id_evento){
+                        $nome_evento=$eventos[$i]['evento'];
+                    }
+                }
+            }
+           echo $nome_evento;
+                    ?>
+            </td>
             <td><?= $row->ministrante ?></td>
             <td><?= $row->local_acontecimento ?></td>
             <td><?= $row->data_inicio ?></td>
             <td><?= $row->data_fim ?></td>
-            <td><?= $row->id_usuario ?></td>
+            <td><?php 
+            $tamanho = count($usuarios);
+            if($tamanho > 0){
+                for($i =0; $i<$tamanho; $i++){
+                    if($usuarios[$i]['id']==$row->id_usuario){
+                        $nome_usuario=$usuarios[$i]['usuario'];
+                    }
+                }
+            }
+           echo $nome_usuario;
+                    ?></td>
             
             <td><?= $row->status ?></td>
 
@@ -82,16 +103,11 @@ glyphicon glyphicon-cog"></i></a>
                                     </div>
                                 </div>
                     </div>
-         <td><?= Html::beginForm(Url::toRoute("acontecimento/inscrever"), "POST") ?>
-                                                <input type="hidden" name="id" value="<?= $row->id?>">
-                                                <input type="hidden" name="id_evento" value="<?= $id?>">
-
-                                                <button type="submit" class="btn btn-primary">Inscrever-se</button>
-                                            <?= Html::endForm()?></td>
+         
             </tr>
 <?php endforeach; ?>
             <tr><td><a href="<?= Url::toRoute(["acontecimento/cadastrar","id_evento"=>$id]) ?>"><i class="glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                <td></td></tr>
+             </tr>
 </table>
 
 <?=
