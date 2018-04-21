@@ -20,7 +20,8 @@ use app\models\FormUsuarioUpload;
 use app\models\FormUsuarioUploadAdmin;
 use app\models\SearchUsuario;
 use app\controllers\EventoController;
-
+use app\controllers\AcontecimentoController;
+use app\models\Evento;
 class UsuarioController extends Controller {
 
     public function actionIndex() {
@@ -28,7 +29,26 @@ class UsuarioController extends Controller {
         $model2 = EventoController::Outros_eventos(Yii::$app->user->identity->id);
         return $this->render('index', ["model" => $model,"model2"=>$model2]);
     }
-    
+    public function actionIndexacontecimento(){
+        if (Yii::$app->request->get()) {
+            $id = Html::encode($_GET["id"]);
+            $descricao = Html::encode($_GET["descricao"]);
+        }else{
+            echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/index") . "'>";
+
+        }
+        if ((int) $id) {
+            if (Evento::findOne($id)) {
+                $model = AcontecimentoController::Listar_meus_acontecimentos(Yii::$app->user->identity->id,$id);
+                $model2 = AcontecimentoController::Outros_acontecimentos(Yii::$app->user->identity->id,$id);
+                return $this->render('indexacontecimento', ["model" => $model,"model2"=>$model2,"descricao"=>$descricao]);
+            }
+        }else{
+            echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/index") . "'>";
+        }
+    }
      public function actionIndex2() {
             return $this->render('index2');
      }

@@ -17,9 +17,48 @@ use app\models\User;
 use app\models\Acontecimento;
 use app\models\FormEvento;
 use app\models\FormAcontecimento;
+use app\models\Inscricao_Acontecimento;
 
 class AcontecimentoController extends Controller {
+     public function Listar_meus_acontecimentos($idUSuario,$id_evento){
+           
+                $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a, inscricao_acontecimento i,evento e,usuario u')
+                        ->where('a.id = i.id_acontecimento')->andWhere('a.id_evento=e.id')
+                        ->andWhere('e.id=:id', array(':id'=>$id_evento))
+                        ->andWhere('i.id_participante=:id', array(':id'=>$idUSuario))->andWhere(('a.id_usuario = u.id'))->all();
+                return $sql;
+        }
+        
+        public function Outros_acontecimentos($idUSuario,$id_evento) {
+            //Selecionar todos os eventos Que eu não participo
+           $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a, inscricao_acontecimento i,evento e,usuario u')
+                        ->where('a.id_evento=e.id')
+                        ->andWhere('e.id=:id', array(':id'=>$id_evento))
+                        ->andWhere(('a.id_usuario = u.id'))->all();
+                return $sql;
+        }
+       public function actionInscrever() {
+        if(Yii::$app->request->post()){
+            $id = Html::encode($_POST["id"]);
+                if((int) $id){
 
+                   $inscricao=  new Inscricao_Acontecimento();
+                   $inscricao->id_acontecimento=$id;
+                   $inscricao->id_participante=Yii::$app->user->identity->id;
+                   $inscricao->status="Aprovada";
+                      if($inscricao->insert()){
+                        echo "Sua inscrição foi realizada com sucesso no acontecimento!";
+                      echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/indexacontecimento")."'>";
+                          
+                      }
+                      }
+
+                }else{
+                    echo "Error ao se inscrever, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                }
+    
+    } 
     public function actionIndex() {
         $form = new SearchAcontecimento();
         $search = null;

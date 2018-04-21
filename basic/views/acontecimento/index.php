@@ -6,25 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
-function F_conect(){
-        $servidor = "localhost";    
-        $nomebanco = "sepe" ;
-        $usuario = "root";
-        $senha = "";
 
-        // Criando conexão com o Banco de Dados
-        $conn = new mysqli($servidor, $usuario, $senha,$nomebanco);
-
-        // Checando conexão erro
-        if ($conn->connect_error)
-            {
-            //Caso verdadeiro, Mostra o Erro.
-            die("Connection failed: " . $conn->connect_error);
-        }else{
-            // Caso falso, retorna a conexão
-            return $conn;
-        }
-    }
 $f = ActiveForm::begin([
             "method" => "get",
             "action" => Url::toRoute("acontecimento/index"),
@@ -58,7 +40,8 @@ $f = ActiveForm::begin([
         <th>Status</th>
 
         <th></th>
-       
+               <th></th>
+
     </tr>
     <?php foreach ($model as $row): ?>
         <tr>
@@ -69,18 +52,8 @@ $f = ActiveForm::begin([
             <td><?= $row->local_acontecimento ?></td>
             <td><?= $row->data_inicio ?></td>
             <td><?= $row->data_fim ?></td>
-            <?php
-             $conn = F_conect();
-    $result = mysqli_query($conn, "Select * from usuario where id=" . $row->id_usuario);
-
-    if (mysqli_num_rows($result)) {
-        while ($row1 = $result->fetch_assoc()) {
-            echo"<td>" . $row1['nome'] . "</td>";
-           
-        }
-    }
-    $conn->close();
-            ?>
+            <td><?= $row->id_usuario ?></td>
+            
             <td><?= $row->status ?></td>
 
             <td><a href="<?= Url::toRoute(["acontecimento/editar","id"=>$row->id, "descricao"=>$row->descricao,"id_evento"=>$id])?>"><i class="
@@ -109,10 +82,16 @@ glyphicon glyphicon-cog"></i></a>
                                     </div>
                                 </div>
                     </div>
+         <td><?= Html::beginForm(Url::toRoute("acontecimento/inscrever"), "POST") ?>
+                                                <input type="hidden" name="id" value="<?= $row->id?>">
+                                                <input type="hidden" name="id_evento" value="<?= $id?>">
+
+                                                <button type="submit" class="btn btn-primary">Inscrever-se</button>
+                                            <?= Html::endForm()?></td>
             </tr>
 <?php endforeach; ?>
             <tr><td><a href="<?= Url::toRoute(["acontecimento/cadastrar","id_evento"=>$id]) ?>"><i class="glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-</td></tr>
+                <td></td></tr>
 </table>
 
 <?=

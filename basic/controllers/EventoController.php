@@ -214,15 +214,14 @@ class EventoController extends Controller {
         
         public function Listar_meus_eventos($idUSuario){
            
-                $sql = (new \yii\db\Query())->select('*')->from('evento, inscricao_evento')
-                        ->where('evento.id = inscricao_evento.id_evento')->andWhere('inscricao_evento.id_participante=:id', array(':id'=>$idUSuario))->all();
+                $sql = (new \yii\db\Query())->select('e.local_evento local_evento,e.descricao descricao,e.data_inicio data_inicio,e.data_fim data_fim,e.id id')->from('evento e, inscricao_evento i')
+                        ->where('e.id = i.id_evento')->andWhere('i.id_participante=:id', array(':id'=>$idUSuario))->all();
                 return $sql;
         }
         
         public function Outros_eventos($idUSuario) {
             //Selecionar todos os eventos Que eu não participo
-            $sql = (new \yii\db\Query())->select('*')->from('evento, inscricao_evento')
-                        ->where('evento.id = inscricao_evento.id_evento')->andWhere('inscricao_evento.id_participante != :id', array(':id'=>$idUSuario))->all();
+            $sql = (new \yii\db\Query())->select('*')->from('evento')->all();
                 return $sql;
         }
         
