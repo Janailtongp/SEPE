@@ -16,7 +16,7 @@ $this->params['Participante'][] = $this->title;
 <?= Html::endForm()?>
 
 <table class="table table-bordered">
-    <caption><h3><b>Meus acontecimentos do Evento: <?php echo $descricao;?></b></h3></caption>
+    <caption><h3><b>Meus acontecimentos: <?php echo $descricao;?></b></h3></caption>
             <tr>
          <th>Descrição</th>
         <th>Tipo</th>
@@ -74,11 +74,9 @@ $this->params['Participante'][] = $this->title;
             }    
             ?>
         </table>
-<br/>
-<br/>
 
 <table class="table table-bordered">
-    <caption><h3><b>Outros Acontecimentos do Evento <?php echo $descricao;?></b></h3></caption>
+    <caption><h3><b>Outros Acontecimentos: <?php echo $descricao;?></b></h3></caption>
             <tr>
                      <th>Descrição</th>
         <th>Tipo</th>
@@ -119,6 +117,59 @@ $this->params['Participante'][] = $this->title;
                    }
                 }
             }
-         ?>
-                   
+         ?>                   
 </table>
+                     
+<table class="table table-bordered">
+    <caption><h3><b>Minhas submissões: <?php echo $descricao;?></b></h3></caption>
+            <tr>
+        <th>Status</th>
+        <th>Resumo</th>
+        <th></th>
+        <th>Data de Apresentação</th>
+        <th>Hora</th>
+        <th>Nota</th>
+        <th>Obs.:</th>
+        <th>Anexo</th>
+              </tr>
+            <?php
+            $tamanho3 = count($model3);
+            if(3 > 0){
+                for($i =0; $i<$tamanho3; $i++){
+                    ?>
+                    <tr>
+                        <td><?=$model3[$i]['status'] ?> </td>
+                        <td><?php echo substr($model3[$i]['resumo'],0,50).' [...] ' ?></td>
+                        <td>
+                            <a href="#" data-toggle='modal' data-target="#myModal<?= $model3[$i]['id'] ?>">
+                                <samp class="glyphicon glyphicon-eye-open"></samp>
+                            </a>
+                        </td>
+                        <td><?=$model3[$i]['data_apresentacao'] ?> </td>
+                        <td><?=$model3[$i]['horario_apresentacao'] ?> </td>
+                        <td><?=$model3[$i]['nota'] ?> </td>
+                        <td><?=$model3[$i]['observacao_avaliacao'] ?> </td>
+                        <td><a target="_blank" href="<?=$model3[$i]['caminho'] ?>"><samp class="glyphicon glyphicon-eye-open"></samp></a> </td>
+                    
+                    <div class='modal fade' id=myModal<?= $model3[$i]['id']?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+                                <div class='modal-dialog' role='document'>
+                                    <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                            <h4 class='modal-title' id='myModalLabel'>Resumo Completo.</h4>
+                                        </div>
+                                        <div class='modal-body'>
+                                            <p><?= $model3[$i]['resumo']?> ?</p>    
+                                        </div>
+                                        <div class='modal-footer'>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+            </tr>
+            <?php
+                }
+            }    
+            ?>
+  </table>

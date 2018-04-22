@@ -20,6 +20,7 @@ use app\models\FormUsuarioUpload;
 use app\models\FormUsuarioUploadAdmin;
 use app\models\SearchUsuario;
 use app\controllers\EventoController;
+use app\controllers\ArtigoController;
 use app\controllers\AcontecimentoController;
 use app\controllers\PropostasController;
 
@@ -45,7 +46,8 @@ class UsuarioController extends Controller {
             if (Evento::findOne($id)) {
                 $model = AcontecimentoController::Listar_meus_acontecimentos(Yii::$app->user->identity->id,$id);
                 $model2 = AcontecimentoController::Outros_acontecimentos(Yii::$app->user->identity->id,$id);
-                return $this->render('indexacontecimento', ["model" => $model,"model2"=>$model2,"descricao"=>$descricao,"id"=>$id]);
+                $model3= ArtigoController::Meus_artigos(Yii::$app->user->identity->id,$id);
+                return $this->render('indexacontecimento', ["model" => $model,"model2"=>$model2,"model3"=>$model3,"descricao"=>$descricao,"id"=>$id]);
             }
         }else{
             echo "Erro ao encontrar evento 3!, tente novamente ...";
@@ -164,7 +166,7 @@ class UsuarioController extends Controller {
                         ->orWhere(["like", "instituicao", $search]);
                 $count = clone $table;
                 $pages = new Pagination([
-                    "pageSize" => 1,
+                    "pageSize" => 10,
                     "totalCount" => $count->count(),
                 ]);
                 $model = $table
@@ -178,7 +180,7 @@ class UsuarioController extends Controller {
             $table = Usuario::find();
             $count = clone $table;
             $pages = new Pagination([
-                "pageSize" => 1,
+                "pageSize" => 10,
                 "totalCount" => $count->count(),
             ]);
             $model = $table

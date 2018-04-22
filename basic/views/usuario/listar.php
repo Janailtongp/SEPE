@@ -22,7 +22,7 @@ $f = ActiveForm::begin([
 
 <?php $f->end() ?>
 
-<h3><?= $search ?></h3> 
+<!--<h3><? = $search ?></h3>--> 
 
 
 <h3>Lista de Usuários</h3>

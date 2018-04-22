@@ -14,6 +14,7 @@ use yii\helpers\Url;
 use app\models\Evento;
 use app\models\User;
 use app\models\FormEvento;
+use app\models\Artigo;
 
 
 class EventoController extends Controller {
@@ -207,8 +208,58 @@ class EventoController extends Controller {
             return $this->redirect(["usuario/index"]);
         }
     }
-        
-        
+    public function ListarArtigos() {
+            if (Yii::$app->request->get()) {
+                $id = Html::encode($_GET["id_evento"]);
+                if ((int) $id) {
+                    if (Evento::findOne($id)){
+                      $model = Artigo::ArtigosListar($id);
+                    }
+                }
+            }
+    }
+   
+    
+        public function behaviors(){
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index','cadastrar',"delete","editar"],
+                'rules' => [
+                    [
+                        'actions' =>['index','cadastrar',"delete","editar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserAdmin(Yii::$app->user->identity->id); 
+                        },
+                    ],
+                    [
+                        'actions' =>['index','cadastrar',"delete","editar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserChefe(Yii::$app->user->identity->id); 
+                        },  
+                    ],
+                    [
+                        'actions' =>[''],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserSimple(Yii::$app->user->identity->id); 
+                        },  
+                    ],            
+                ],                
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+   }
     
 
    }
