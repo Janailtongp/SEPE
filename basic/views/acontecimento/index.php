@@ -84,9 +84,13 @@ glyphicon glyphicon-cog"></i></a>
            
                 <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
 </td>
-    <td><a href="<?= Url::toRoute(["acontecimento/frequencia"])?>">
-                <button type="submit" class="btn btn-primary">Gerar Frequência</button>
-        </a>            </td>
+    <td>
+   <?= Html::beginForm(Url::toRoute("acontecimento/frequencia"), "POST") ?>
+                                                <input type="hidden" name="id" value="<?= $row->id?>">
+                                                <input type="hidden" name="id_evento" value="<?= $id?>">
+
+                                                <button type="submit" class="btn btn-primary">Gerar Frequência</button>
+                                            <?= Html::endForm()?>    </td>
                     <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
                                 <div class='modal-dialog' role='document'>
                                     <div class='modal-content'>

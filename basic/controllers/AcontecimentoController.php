@@ -214,18 +214,24 @@ class AcontecimentoController extends Controller {
       public function frequencia_acontecimento($id_acontecimento){
            
                 $sql = (new \yii\db\Query())->select('u.nome usuario')->from('inscricao_acontecimento i,usuario u')
-                        ->where('a.i = i.id_acontecimento')->andWhere('a.id_evento=e.id')
-                        ->andWhere('e.id=:id', array(':id'=>$id_evento))
+                        ->where('i.id_participante = u.id')
                         ->andWhere('i.id_acontecimento=:id', array(':id'=>$id_acontecimento))->all();
                 return $sql;
         }
     public function actionFrequencia(){
-         if (Yii::$app->request->get()) {
-            $id_acontecimento = Html::encode($_GET["id"]);
-        }    
-        
-        return $this->redirect(["acontecimento/frequencia"]);
+       if (Yii::$app->request->post()) {
+            $id_acontecimento = Html::encode($_POST["id"]);
+            $id_evento=Html::encode($_POST["id_evento"]);
+            if ((int) $id_acontecimento) {
+                $model = AcontecimentoController::frequencia_acontecimento($id_acontecimento);
+                return $this->render("frequencia", ["model" => $model,"id_evento"=>$id_evento]);
 
+            }else{
+                return $this->render("index", ["model" => $model,"id"=>$id_evento]);
+
+            }
+
+        }
     }
     public function actionEditar() {
         $model = new FormAcontecimento;
