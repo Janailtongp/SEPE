@@ -234,10 +234,36 @@ class AcontecimentoController extends Controller {
                }
             }
         }
+        public function actionAlterarfrequencia(){
+             if (Yii::$app->request->get()) {
+            $id_frequencia = Html::encode($_GET['id']);
+            $id_evento = Html::encode($_GET['id_evento']);
+            $id_acontecimento = Html::encode($_GET['id_acontecimento']);
+
+            if ((int) $id_frequencia) {
+               $table = Frequencia_Acontecimento::findOne($id_frequencia);
+               if(strcmp($table->status,"Presente")==0){
+                   $table->status="Faltou";
+               }else{
+                    $table->status="Presente";
+
+               }
+                    $table->save();
+                return $this->render("frequencia", ["id_evento" => $id_evento,"id"=>$id_acontecimento]);
+
+            } else {
+            return $this->redirect(["usuario/index2"]);
+        }
+        }else{
+            return $this->redirect(["usuario/index2"]);
+
+        }
+        }
+        
     public function actionFrequencia(){
-       if (Yii::$app->request->post()) {
-            $id_acontecimento = Html::encode($_POST["id"]);
-            $id_evento=Html::encode($_POST["id_evento"]);
+       if (Yii::$app->request->get()) {
+            $id_acontecimento = Html::encode($_GET["id"]);
+            $id_evento=Html::encode($_GET["id_evento"]);
             if ((int) $id_acontecimento) {
                
                 AcontecimentoController::gerar_frequencia($id_acontecimento);

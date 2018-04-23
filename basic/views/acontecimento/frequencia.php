@@ -29,10 +29,16 @@ use yii\widgets\LinkPager;
                            foreach ($frequencias as $f){
                                if($f->id_participante==$model[$i]['id']){
                                    echo "<td>".$f->status."</td>";
+                                   ?>
+                        <td><a href="<?= Url::toRoute(["acontecimento/alterarfrequencia","id"=>$f->id,"id_evento"=>$evento->id, "id_acontecimento"=>$acontecimento->id])?>">
+                        <button  class="btn btn-primary">Alterar Status</button>
+
+                            </a></td>
+                        <?php
                                }
                            }
                         ?>                       
-                        <td></td>
+                       
 
                         
                   

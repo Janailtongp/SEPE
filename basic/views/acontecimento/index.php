@@ -85,7 +85,7 @@ glyphicon glyphicon-cog"></i></a>
                 <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
 </td>
     <td>
-   <?= Html::beginForm(Url::toRoute("acontecimento/frequencia"), "POST") ?>
+   <?= Html::beginForm(Url::toRoute("acontecimento/frequencia"), "GET") ?>
                                                 <input type="hidden" name="id" value="<?= $row->id?>">
                                                 <input type="hidden" name="id_evento" value="<?= $id?>">
 
