@@ -41,6 +41,8 @@ $f = ActiveForm::begin([
         <th>Status</th>
 
                <th></th>
+                              <th></th>
+
 
     </tr>
     <?php foreach ($model as $row): ?>
@@ -82,6 +84,9 @@ glyphicon glyphicon-cog"></i></a>
            
                 <a href="#" data-toggle='modal' data-target="#myModal<?= $row->id ?>"><i class="glyphicon glyphicon-trash"></i></a>
 </td>
+    <td><a href="<?= Url::toRoute(["acontecimento/frequencia"])?>">
+                <button type="submit" class="btn btn-primary">Gerar Frequência</button>
+        </a>            </td>
                     <div class='modal fade' id=myModal<?= $row->id?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
                                 <div class='modal-dialog' role='document'>
                                     <div class='modal-content'>
@@ -107,7 +112,7 @@ glyphicon glyphicon-cog"></i></a>
             </tr>
 <?php endforeach; ?>
             <tr><td><a href="<?= Url::toRoute(["acontecimento/cadastrar","id_evento"=>$id]) ?>"><i class="glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-             </tr>
+                <td></td></tr>
 </table>
 
 <?=

@@ -211,7 +211,22 @@ class AcontecimentoController extends Controller {
             return $this->redirect(["evento/index"]);
         }
     }
+      public function frequencia_acontecimento($id_acontecimento){
+           
+                $sql = (new \yii\db\Query())->select('u.nome usuario')->from('inscricao_acontecimento i,usuario u')
+                        ->where('a.i = i.id_acontecimento')->andWhere('a.id_evento=e.id')
+                        ->andWhere('e.id=:id', array(':id'=>$id_evento))
+                        ->andWhere('i.id_acontecimento=:id', array(':id'=>$id_acontecimento))->all();
+                return $sql;
+        }
+    public function actionFrequencia(){
+         if (Yii::$app->request->get()) {
+            $id_acontecimento = Html::encode($_GET["id"]);
+        }    
+        
+        return $this->redirect(["acontecimento/frequencia"]);
 
+    }
     public function actionEditar() {
         $model = new FormAcontecimento;
         $msg = null;
@@ -272,14 +287,14 @@ class AcontecimentoController extends Controller {
     }
      public function actionDeixaracontecimento() {
         if (Yii::$app->request->post()) {
-            $id_acontecimento = Html::encode($_POST['id_inscricao']);
+            $id_inscricao = Html::encode($_POST['id_inscricao']);
             $id_evento = Html::encode($_POST['id_evento']);
             $descricao = Html::encode($_POST['descricao']);
 
             $id_usuario = Yii::$app->user->identity->id;
             if ((int) $id_usuario) {
-                if (Inscricao_Acontecimento::deleteAll("id=:id_acontecimento AND id_participante=:id_usuario",
-                                    [":id_acontecimento" => $id_acontecimento,":id_usuario"=>$id_usuario])) {
+                if (Inscricao_Acontecimento::deleteAll("id=:id_inscricao",
+                                    [":id_inscricao" => $id_inscricao])) {
                     echo "Você deixou o acontecimento com sucesso! ...";
                     echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                 } else {
