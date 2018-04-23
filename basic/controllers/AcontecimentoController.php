@@ -18,6 +18,7 @@ use app\models\Acontecimento;
 use app\models\FormEvento;
 use app\models\FormAcontecimento;
 use app\models\Inscricao_Acontecimento;
+use app\models\Frequencia_Acontecimento;
 
 class AcontecimentoController extends Controller {
      public function Listar_meus_acontecimentos($idUSuario,$id_evento){
@@ -213,23 +214,49 @@ class AcontecimentoController extends Controller {
     }
       public function frequencia_acontecimento($id_acontecimento){
            
-                $sql = (new \yii\db\Query())->select('u.nome usuario')->from('inscricao_acontecimento i,usuario u')
+                $sql = (new \yii\db\Query())->select('u.nome usuario,u.id id')->from('inscricao_acontecimento i,usuario u')
                         ->where('i.id_participante = u.id')
                         ->andWhere('i.id_acontecimento=:id', array(':id'=>$id_acontecimento))->all();
                 return $sql;
+        }
+        public function gerar_frequencia($id_acontecimento){
+            $participantes=  AcontecimentoController::frequencia_acontecimento($id_acontecimento);
+            $tamanho=count($participantes);
+            for($i=0;$i<$tamanho;$i++){
+               $frequencia_usu=Frequencia_Acontecimento::find()->where(array('id_acontecimento' => $id_acontecimento))->andWhere(array('id_participante' => $participantes[$i]['id']))->all();
+               $tamanho2=count($frequencia_usu);
+               if($tamanho2==0){
+                $table = new Frequencia_Acontecimento();
+                $table->id_acontecimento = $id_acontecimento;
+                $table->id_participante = $participantes[$i]['id'];
+                $table->status="Presente";
+                $table->insert();
+               }
+            }
         }
     public function actionFrequencia(){
        if (Yii::$app->request->post()) {
             $id_acontecimento = Html::encode($_POST["id"]);
             $id_evento=Html::encode($_POST["id_evento"]);
             if ((int) $id_acontecimento) {
+               
+                AcontecimentoController::gerar_frequencia($id_acontecimento);
+                
+                $frequencias=Frequencia_Acontecimento::find()->where(array('id_acontecimento' => $id_acontecimento))->all();
+
                 $model = AcontecimentoController::frequencia_acontecimento($id_acontecimento);
-                return $this->render("frequencia", ["model" => $model,"id_evento"=>$id_evento]);
+                $evento= Evento::findOne($id_evento);
+                $acontecimento=  Acontecimento::findOne($id_acontecimento);
+                
+                return $this->render("frequencia", ["model" => $model,"evento"=>$evento,"acontecimento"=>$acontecimento,"frequencias"=>$frequencias]);
 
             }else{
-                return $this->render("index", ["model" => $model,"id"=>$id_evento]);
+            return $this->redirect(["evento/index"]);
 
             }
+
+        }else{
+            return $this->redirect(["evento/index"]);
 
         }
     }

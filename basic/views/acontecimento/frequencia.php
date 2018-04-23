@@ -6,6 +6,41 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
-echo "Frequencia";
-
 ?>
+
+
+<table class="table table-bordered">
+    <caption><h3><b>Lista de Frequência do Acontecimento:<?php echo $acontecimento->descricao;?> do evento:<?php echo $evento->descricao;?></b></h3></caption>
+            <tr>
+                    <th>Participante</th>
+                    <th>Situação</th>
+                    <th></th>
+                  
+
+              </tr>
+            <?php
+            $tamanho = count($model);
+            if($tamanho > 0){
+                for($i =0; $i<$tamanho; $i++){
+                    ?>
+                    <tr>
+                        <td><?=$model[$i]['usuario'] ?> </td>
+                        <?php 
+                           foreach ($frequencias as $f){
+                               if($f->id_participante==$model[$i]['id']){
+                                   echo "<td>".$f->status."</td>";
+                               }
+                           }
+                        ?>                       
+                        <td></td>
+
+                        
+                  
+         
+                    
+            </tr>
+            <?php
+                }
+            }    
+            ?>
+        </table>
