@@ -29,9 +29,9 @@ class AcontecimentoController extends Controller {
                 return $sql;
         }
         
-        public function Outros_acontecimentos($idUSuario,$id_evento) {
+        public function Outros_acontecimentos($id_evento) {
             //Selecionar todos os eventos Que eu não participo
-           $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a, inscricao_acontecimento i,evento e,usuario u')
+           $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a,evento e,usuario u')
                         ->where('a.id_evento=e.id')
                         ->andWhere('e.id=:id', array(':id'=>$id_evento))
                         ->andWhere(('a.id_usuario = u.id'))->all();

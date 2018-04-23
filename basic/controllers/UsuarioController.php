@@ -34,7 +34,7 @@ class UsuarioController extends Controller {
         return $this->render('index', ["model" => $model,"model2"=>$model2,"model3"=>$model3]);
     }
     public function actionIndexacontecimento(){
-        if (Yii::$app->request->get()) {
+        if (Yii::$app->request->get("id")) {
             $id = Html::encode($_GET["id"]);
             $descricao = Html::encode($_GET["descricao"]);
         }else{
@@ -45,7 +45,7 @@ class UsuarioController extends Controller {
         if ((int) $id) {
             if (Evento::findOne($id)) {
                 $model = AcontecimentoController::Listar_meus_acontecimentos(Yii::$app->user->identity->id,$id);
-                $model2 = AcontecimentoController::Outros_acontecimentos(Yii::$app->user->identity->id,$id);
+                $model2 = AcontecimentoController::Outros_acontecimentos($id);
                 $model3= ArtigoController::Meus_artigos(Yii::$app->user->identity->id,$id);
                 return $this->render('indexacontecimento', ["model" => $model,"model2"=>$model2,"model3"=>$model3,"descricao"=>$descricao,"id"=>$id]);
             }

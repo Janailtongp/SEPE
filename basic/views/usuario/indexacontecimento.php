@@ -18,7 +18,7 @@ $this->params['Participante'][] = $this->title;
 <table class="table table-bordered">
     <caption><h3><b>Meus acontecimentos: <?php echo $descricao;?></b></h3></caption>
             <tr>
-         <th>Descrição</th>
+        <th>Descrição</th>
         <th>Tipo</th>
         <th>Evento</th>
         <th>Ministrante(s)</th>
@@ -89,10 +89,11 @@ $this->params['Participante'][] = $this->title;
               </tr>
             <?php
             $tamanho2 = count($model2);
+            $tamanho1=count($model);
             if($tamanho2 > 0){
                 for($i =0; $i<$tamanho2; $i++){
                     $ja_me_inscrevi=0;
-                    for($j=0;$j<$tamanho2;$j++){
+                    for($j=0;$j<$tamanho1;$j++){
                         if($model[$j]['id']==$model2[$i]['id']){
                             $j=$tamanho2+1;
                             $ja_me_inscrevi=1;
