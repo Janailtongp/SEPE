@@ -128,6 +128,26 @@ class PropostasController extends Controller {
         } 
        }
     }
+     public function actionDesaprovar(){
+        if(Yii::$app->request->post()){
+            $id = Html::encode($_POST["id"]);
+                if((int) $id){
+                     $table = Propostas::findOne($id);
+                    if($table){
+                    $table->status ="Não Aprovada!";
+                    if($table->update()){
+                        echo "Proposta Não Aprovada!";
+                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("propostas/index")."'>";                    }  else {
+                    }
+                }else{
+                    echo "Erro ao desaprovar proposta, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("propostas/index")."'>";
+                }
+        }else{
+            return $this->redirect(["propostas/index"]);
+        } 
+       }
+    }
     public function actionEditar() {
         $model = new FormPropostas();
         $msg = null;
