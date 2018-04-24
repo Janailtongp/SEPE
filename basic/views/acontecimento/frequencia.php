@@ -10,7 +10,7 @@ use yii\widgets\LinkPager;
 
 
 <table class="table table-bordered">
-    <caption><h3><b>Lista de Frequência do Acontecimento:<?php echo $acontecimento->descricao;?> do evento:<?php echo $evento->descricao;?></b></h3></caption>
+    <caption><h3><b>Lista de Frequência do Acontecimento >> <?php echo $acontecimento->descricao;?> >> <?php echo $evento->descricao;?></b></h3></caption>
             <tr>
                     <th>Participante</th>
                     <th>Situação</th>

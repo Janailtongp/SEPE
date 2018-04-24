@@ -19,8 +19,10 @@ use app\models\FormEvento;
 use app\models\FormAcontecimento;
 use app\models\Inscricao_Acontecimento;
 use app\models\Frequencia_Acontecimento;
+use mPDF;
 
 class AcontecimentoController extends Controller {
+    
      public function Listar_meus_acontecimentos($idUSuario,$id_evento){
            
                 $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id,i.id id_inscricao')->from('acontecimento a, inscricao_acontecimento i,evento e,usuario u')
@@ -212,9 +214,40 @@ class AcontecimentoController extends Controller {
             return $this->redirect(["evento/index"]);
         }
     }
+    
+    public function actionLista_pdf($id) {
+        if (Yii::$app->request->get()) {
+            $id_acontecimento = Html::encode($_GET["id"]);
+            $id_evento=Html::encode($_GET["id_evento"]);
+            if ((int) $id_acontecimento) {
+                AcontecimentoController::gerar_frequencia($id_acontecimento);
+                $frequencias=Frequencia_Acontecimento::find()->where(array('id_acontecimento' => $id_acontecimento))->all();
+
+                $model = AcontecimentoController::frequencia_acontecimento($id_acontecimento);
+                $evento= Evento::findOne($id_evento);
+                $acontecimento=  Acontecimento::findOne($id_acontecimento);
+                
+                $mpdf_content =  $this->renderPartial("lista_pdf", ["model" => $model,"evento"=>$evento,"acontecimento"=>$acontecimento,"frequencias"=>$frequencias]);
+                $mpdf = new mPDF();
+                $mpdf->WriteHTML($mpdf_content);
+                $mpdf->Output();
+                exit;
+            }else{
+            return $this->redirect(["evento/index"]);
+
+            }
+
+        }else{
+            return $this->redirect(["evento/index"]);
+
+        }
+       
+    }
+    
+    
       public function frequencia_acontecimento($id_acontecimento){
            
-                $sql = (new \yii\db\Query())->select('u.nome usuario,u.id id')->from('inscricao_acontecimento i,usuario u')
+                $sql = (new \yii\db\Query())->select('u.nome usuario,u.id id, u.cpf cpf')->from('inscricao_acontecimento i,usuario u')
                         ->where('i.id_participante = u.id')
                         ->andWhere('i.id_acontecimento=:id', array(':id'=>$id_acontecimento))->all();
                 return $sql;
