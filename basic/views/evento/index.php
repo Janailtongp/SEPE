@@ -28,7 +28,7 @@ $f = ActiveForm::begin([
 
 <h3>Lista de Eventos</h3>
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <tr>
         <th>Descrição</th>
         <th>Local do Evento</th>
@@ -36,6 +36,8 @@ $f = ActiveForm::begin([
         <th>Data Fim</th>
         <th></th>
         <th></th>
+                <th></th>
+
         <th></th>
 
     </tr>
@@ -57,6 +59,9 @@ $f = ActiveForm::begin([
             </td>
             <td>
                 <a class="btn btn-primary" href="<?= Url::toRoute(["artigo/listar", "id_evento" => $row->id,"titulo"=>$row->descricao]) ?>">Submissões</a>
+            </td>
+              <td>
+                <a class="btn btn-primary" href="<?= Url::toRoute(["evento/participante", "id_evento" => $row->id,"titulo"=>$row->descricao]) ?>">Participantes</a>
             </td>
             <?php ?>
         <div class='modal fade' id=myModal<?= $row->id ?> tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
@@ -80,8 +85,8 @@ $f = ActiveForm::begin([
         </div>
     </tr>
 <?php endforeach; ?>
-<tr><td><a href="<?= Url::toRoute("evento/cadastrar") ?>">Adicionar um novo Evento</a><td></td><td></td><td></td><td></td><td></td>
-    <td></td></tr>
+    <tr><td><a href="<?= Url::toRoute("evento/cadastrar") ?>"><i class="	glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td><td></td><td></td>
+    <td></td> <td></td></tr>
 </table>
 
 <?=

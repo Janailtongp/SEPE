@@ -10,7 +10,7 @@ $this->params['Participante'][] = $this->title;
 <a href="<?=Url::toRoute("usuario/index")?>">Eventos Abertos</a><br/>
 <a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <caption><h3><b>Minhas Inscrições</b></h3></caption>
             <tr>
                     <th>Local</th>
@@ -32,7 +32,7 @@ $this->params['Participante'][] = $this->title;
                         <td><?=$model[$i]['data_inicio'] ?> </td>
                         <td><?=$model[$i]['data_fim'] ?> </td>
                     <td>
-                <a href="#" data-toggle='modal' data-target="#myModal<?= $model[$i]['id'] ?>">Sair</a>
+                        <a href="#" data-toggle='modal' data-target="#myModal<?= $model[$i]['id'] ?>"><button class="btn btn-primary">Sair</button></a>
             </td>
              <td><?= Html::beginForm(Url::toRoute("usuario/indexacontecimento"), "GET") ?>
                                                 <input type="hidden" name="id" value="<?= $model[$i]['id']?>">
@@ -66,7 +66,7 @@ $this->params['Participante'][] = $this->title;
             ?>
         </table>
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <caption><h3><b>Outros Eventos</b></h3></caption>
             <tr>
                     <th>Local</th>
@@ -109,7 +109,7 @@ $this->params['Participante'][] = $this->title;
                 
                 
                     </table>
-<table class="table table-bordered">
+<table class="table table-striped">
     <caption><h3><b>Minhas Propostas</b></h3></caption>
             <tr>
                     <th>Descrição</th>
@@ -168,6 +168,6 @@ glyphicon glyphicon-cog"></i></a>
                    
           
                 
-                 <tr><td><a href="<?= Url::toRoute("propostas/cadastrar") ?>">Adicionar uma nova Proposta</a><td></td><td></td><td></td>
+            <tr><td><a href="<?= Url::toRoute("propostas/cadastrar") ?>"><i class="	glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td>
                 </tr>
                     </table>

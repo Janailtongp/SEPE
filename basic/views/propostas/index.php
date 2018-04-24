@@ -27,7 +27,7 @@ $f = ActiveForm::begin([
 
 <h3>Propostas</h3>
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <tr>
         <th>Participante</th>
 

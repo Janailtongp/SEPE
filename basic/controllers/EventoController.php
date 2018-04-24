@@ -7,7 +7,12 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\SearchEvento;
 use app\models\Inscricao_Evento;
+use app\models\Acontecimento;
+use app\models\Inscricao_Acontecimento;
+use app\models\Usuario;
 
+
+use app\models\Frequencia_Acontecimento;
 use yii\helpers\Html;
 use yii\data\Pagination;
 use yii\helpers\Url;
@@ -55,6 +60,7 @@ class EventoController extends Controller {
         }
         return $this->render("index",["model"=>$model, "form"=>$form, "search"=>$search, "pages"=>$pages]);
         }
+        
         public function actionCadastrar(){
           /*
             passagem de parametro
@@ -85,6 +91,22 @@ class EventoController extends Controller {
         return $this->render("cadastrar",["model"=>$cadastroModel, "msg"=>$msg]);
 
     }
+    public function actionParticipante(){
+        if (Yii::$app->request->get()) {
+            $id_evento = Html::encode($_GET["id_evento"]);
+            $acontecimentos= Acontecimento::find()->where(array('id_evento' => $id_evento))->all();
+            $frequencias= Frequencia_Acontecimento::find()->all();
+            $inscricoes= Inscricao_Acontecimento::find()->all();
+            $usuarios= Usuario::find()->all();
+            $evento=  Evento::findOne($id_evento);
+            return $this->render("participante",["acontecimentos"=>$acontecimentos,"frequencias"=>$frequencias,"inscricoes"=>$inscricoes,"usuarios"=>$usuarios,"evento"=>$evento]);
+        }else{
+            echo "Erro ao encontrar evento 3!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+
+        }
+    }
+
     public function actionInscrever() {
         if(Yii::$app->request->post()){
             $id = Html::encode($_POST["id"]);

@@ -28,7 +28,7 @@ $f = ActiveForm::begin([
 
 <h3>Lista de Acontecimentos</h3>
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <tr>
         <th>Descrição</th>
         <th>Tipo</th>
