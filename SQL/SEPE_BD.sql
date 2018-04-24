@@ -33,6 +33,7 @@ create table acontecimento(
 	data_inicio text not null, 
 	data_fim text not null,
 	status text not null,
+	area_conhecimento text not null,
 	primary key(id),
 	foreign key(id_usuario) references usuario(id), 
 	foreign key(id_evento) references evento(id)
@@ -80,18 +81,22 @@ create table artigo(
 	horario_apresentacao text,
 	caminho text,
 	documento_digital text,
+	area_conhecimento text not null,
 	nota double,
 	status text,
 	observacao_avaliacao text,
+	avaliador int not null,
 	primary key(id),
 	foreign key(id_participante) references usuario(id),
-	foreign key(id_evento) references evento(id)
+	foreign key(id_evento) references evento(id),
+	foreign key (avaliador) references usuario(id)
 );
 create table propostas(
 	id int auto_increment not null,
 	id_participante int not null,
 	status text,
 	descricao text not null,
+	area_conhecimento text not null,
 	tipo text not null,
 	primary key(id),
 	foreign key(id_participante) references usuario(id)
