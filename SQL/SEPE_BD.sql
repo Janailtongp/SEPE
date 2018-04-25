@@ -34,6 +34,7 @@ create table acontecimento(
 	data_fim text not null,
 	status text not null,
 	area_conhecimento text not null,
+	qtd int ,
 	primary key(id),
 	foreign key(id_usuario) references usuario(id), 
 	foreign key(id_evento) references evento(id)
