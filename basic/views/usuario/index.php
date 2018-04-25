@@ -114,6 +114,8 @@ $this->params['Participante'][] = $this->title;
             <tr>
                     <th>Descrição</th>
                     <th>Tipo</th>
+                                        <th>Área Conhecimento</th>
+
                     <th></th>
                     <th></th>
               </tr>
@@ -126,6 +128,7 @@ $this->params['Participante'][] = $this->title;
                         echo "<td>".$model3[$i]['descricao']."</td>";
                         echo "<td>".$model3[$i]['tipo']."</td>";
                         echo "<td>".$model3[$i]['status']."</td>";
+                        echo "<td>".$model3[$i]['area_conhecimento']."</td>";
                         
 
 
@@ -169,5 +172,5 @@ glyphicon glyphicon-cog"></i></a>
           
                 
             <tr><td><a href="<?= Url::toRoute("propostas/cadastrar") ?>"><i class="	glyphicon glyphicon-plus"></i></a><td></td><td></td><td></td>
-                </tr>
+                <td></td></tr>
                     </table>

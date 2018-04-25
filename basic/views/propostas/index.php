@@ -34,6 +34,8 @@ $f = ActiveForm::begin([
         <th>Descrição</th>
         <th>Status</th>
         <th>Tipo</th>
+                <th>Área do Conhecimento</th>
+
         <th></th>
         <th></th>
 
@@ -54,6 +56,8 @@ $f = ActiveForm::begin([
             <td><?= $row->descricao ?></td>
             <td><?= $row->status ?></td>
             <td><?= $row->tipo?></td>
+                        <td><?= $row->area_conhecimento?></td>
+
             <td><?= Html::beginForm(Url::toRoute("propostas/aprovar"), "POST") ?>
                                                 <input type="hidden" name="id" value="<?= $row->id?>">
                                                 <button type="submit" class="btn btn-success">Aprovar</button>

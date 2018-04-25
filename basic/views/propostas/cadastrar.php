@@ -14,6 +14,9 @@ use yii\helpers\Url;
 <?= $form->field($model,'descricao')?>
 <?= $form->field($model, 'tipo')->dropDownList(
 			['Palestra' => 'Palestra', 'Minicurso'=> 'Minicurso', 'Mesa redonda'=> 'Mesa redonda']
+			); ?>
+<?= $form->field($model, 'area_conhecimento')->dropDownList(
+			['Computação e Tecnologia' => 'Computação e Tecnologia', 'Contabéis'=> 'Contabéis', 'Matemática'=> 'Matemática','Geografia'=>'Geografia','História'=>'História','Direito'=>'Direito','Pedagogia'=>'Pedagogia']
 			); ?> 
 
 

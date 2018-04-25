@@ -21,6 +21,9 @@ $form = ActiveForm::begin(
 			['Palestra' => 'Palestra', 'Minicurso'=> 'Minicurso', 'Mesa redonda'=> 'Mesa redonda']
 			); ?> 
 
+<?= $form->field($model, 'area_conhecimento')->dropDownList(
+			['Computação e Tecnologia' => 'Computação e Tecnologia', 'Contabéis'=> 'Contabéis', 'Matemática'=> 'Matemática','Geografia'=>'Geografia','História'=>'História','Direito'=>'Direito','Pedagogia'=>'Pedagogia']
+			); ?> 
 
 <?= Html::submitButton("Atualizar", ["class" => "btn btn-primary"]);?>
 

@@ -21,7 +21,7 @@ use app\models\FormPropostas;
 
 class PropostasController extends Controller {
     public function Minhas_Propostas($id){
-          $sql = (new \yii\db\Query())->select('p.descricao descricao,p.tipo tipo,p.status status,p.id id')->from('propostas p')
+          $sql = (new \yii\db\Query())->select('p.descricao descricao,p.tipo tipo,p.status status,p.id id,p.area_conhecimento area_conhecimento')->from('propostas p')
                         ->where('p.id_participante=:id', array(':id'=>$id))->all();
                 return $sql;
     }
@@ -75,6 +75,8 @@ class PropostasController extends Controller {
             $propostas=  new Propostas;
           $propostas->descricao=$cadastroModel->descricao;
             $propostas->tipo=$cadastroModel->tipo;
+            $propostas->area_conhecimento=$cadastroModel->area_conhecimento;
+
             $propostas->id_participante=Yii::$app->user->identity->id;
                   if($propostas->insert()){
                     $msg =  "Proposta cadastrada com sucesso :D";
@@ -177,6 +179,8 @@ class PropostasController extends Controller {
                 if($table){
                     $table->descricao = $model->descricao;
                     $table->tipo = $model->tipo;
+                                      $table->area_conhecimento = $model->area_conhecimento;
+  
                     if($table->update()){
                         $msg = "Registro atualizado com sucesso!";
                     }  else {
