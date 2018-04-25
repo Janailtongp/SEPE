@@ -53,14 +53,14 @@ class AcontecimentoController extends Controller {
                    $inscricao->status="Aprovada";
                       if($inscricao->insert()){
                         echo "Sua inscrição foi realizada com sucesso no acontecimento!";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+                    echo "<meta http-equiv='refresh' content='1; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                           
                       }
                       }
 
                 }else{
                     echo "Error ao se inscrever, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+                    echo "<meta http-equiv='refresh' content='1; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                 }
     
     } 
@@ -124,12 +124,12 @@ class AcontecimentoController extends Controller {
                 }
                 return $this->render("index", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages,"id"=>$id,"usuarios"=>$usuarios,"eventos"=>$eventos]);
             } else {
-                echo "Erro, tente novamente ... 3";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                echo "Erro, tente novamente ... 1";
+                echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
             }
         } else {
-            echo "Erro ao encontrar evento 3!, tente novamente ...";
-            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+            echo "Erro ao encontrar evento 1!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
         }
     }
 
@@ -138,19 +138,19 @@ class AcontecimentoController extends Controller {
          if (Yii::$app->request->get()) {
             $id_evento = Html::encode($_GET["id_evento"]);
         }else{
-                        echo "Erro ao encontrar evento 3!, tente novamente ...";
-            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                        echo "Erro ao encontrar evento 1!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
 
         }
         if ((int) $id_evento) {
             if (Evento::findOne($id_evento)) {
             }else{
-                echo "Erro ao encontrar evento 3!, tente novamente ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                echo "Erro ao encontrar evento 1!, tente novamente ...";
+                echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
             }
         }else{
-             echo "Erro ao encontrar evento 3!, tente novamente ...";
-            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+             echo "Erro ao encontrar evento 1!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
         }
             
         $model = new FormAcontecimento();
@@ -202,15 +202,18 @@ class AcontecimentoController extends Controller {
             $id_evento=Html::encode($_POST["id_evento"]);
             if ((int) $id) {
                 if (Acontecimento::deleteAll("id=:id", [":id" => $id])) {
-                    echo "Registro excluido com sucesso! ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Registro Excluído com sucesso!');";
+
+            echo "</script>";                  
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
                 } else {
                     echo "Erro ao excluir Registro, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                    echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
                 }
             } else {
                 echo "Erro ao excluir Registro, tente novamente ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+                echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
             }
         } else {
             return $this->redirect(["evento/index"]);
@@ -284,11 +287,15 @@ class AcontecimentoController extends Controller {
 
                }
                     $table->save();
-                return $this->render("frequencia", ["id_evento" => $id_evento,"id"=>$id_acontecimento]);
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Frequência Atualizada!');";
+
+            echo "</script>";
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute(["acontecimento/frequencia","id"=>$id_acontecimento,"id_evento"=>$id_evento]) . "'>";
 
             } else {
             return $this->redirect(["usuario/index2"]);
-        }
+            }
         }else{
             return $this->redirect(["usuario/index2"]);
 
@@ -296,11 +303,15 @@ class AcontecimentoController extends Controller {
         }
         
     public function actionFrequencia(){
+       
        if (Yii::$app->request->get()) {
             $id_acontecimento = Html::encode($_GET["id"]);
             $id_evento=Html::encode($_GET["id_evento"]);
-            if ((int) $id_acontecimento) {
-               
+       }else{
+            return $this->redirect(["evento/index"]);
+
+        }
+        if ((int) $id_acontecimento) {
                 AcontecimentoController::gerar_frequencia($id_acontecimento);
                 
                 $frequencias=Frequencia_Acontecimento::find()->where(array('id_acontecimento' => $id_acontecimento))->all();
@@ -316,11 +327,8 @@ class AcontecimentoController extends Controller {
 
             }
 
-        }else{
-            return $this->redirect(["evento/index"]);
-
         }
-    }
+    
     public function actionEditar() {
         $model = new FormAcontecimento;
         $msg = null;
@@ -393,15 +401,18 @@ class AcontecimentoController extends Controller {
             if ((int) $id_usuario) {
                 if (Inscricao_Acontecimento::deleteAll("id=:id_inscricao",
                                     [":id_inscricao" => $id_inscricao])) {
-                    echo "Você deixou o acontecimento com sucesso! ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Você deixou este acontecimento!');";
+
+            echo "</script>";                 
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                 } else {
                     echo "Erro ao deixar Evento, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; " .Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+                    echo "<meta http-equiv='refresh' content='1; " .Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                 }
             } else {
                 echo "Erro ao deixar Evento, tente novamente ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]). "'>";
+                echo "<meta http-equiv='refresh' content='1; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]). "'>";
             }
         } else {
             return $this->redirect(["usuario/index"]);

@@ -96,15 +96,18 @@ class PropostasController extends Controller {
             $id = Html::encode($_POST["id"]);
                 if((int) $id){
                     if(Propostas::deleteAll("id=:id",[":id" => $id])){
-                        echo "Registro excluido com sucesso! ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Proposta Excluída com sucesso!');";
+
+            echo "</script>";
+            echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("usuario/index")."'>";
                     }else{
                         echo "Erro ao excluir Registro, tente novamente ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
+                        echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("usuario/index")."'>";
                     }
                 }else{
                     echo "Erro ao excluir Registro, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
+                    echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("usuario/index")."'>";
                 }
         }else{
             return $this->redirect(["propostas/index"]);
@@ -118,12 +121,14 @@ class PropostasController extends Controller {
                     if($table){
                     $table->status ="Aprovada!";
                     if($table->update()){
-                        echo "Proposta Aprovada!";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("propostas/index")."'>";                    }  else {
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Proposta Aprovada!');";
+
+            echo "</script>";                        echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("propostas/index")."'>";                    }  else {
                     }
                 }else{
                     echo "Erro ao aprovar proposta, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("propostas/index")."'>";
+                    echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("propostas/index")."'>";
                 }
         }else{
             return $this->redirect(["propostas/index"]);
@@ -138,12 +143,15 @@ class PropostasController extends Controller {
                     if($table){
                     $table->status ="Não Aprovada!";
                     if($table->update()){
-                        echo "Proposta Não Aprovada!";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("propostas/index")."'>";                    }  else {
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Proposta não Aprovada!');";
+
+            echo "</script>";                       
+            echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("propostas/index")."'>";                    }  else {
                     }
                 }else{
                     echo "Erro ao desaprovar proposta, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("propostas/index")."'>";
+                    echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("propostas/index")."'>";
                 }
         }else{
             return $this->redirect(["propostas/index"]);

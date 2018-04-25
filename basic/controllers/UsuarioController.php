@@ -196,8 +196,11 @@ class UsuarioController extends Controller {
             $id_usuario = Html::encode($_POST["id_usuario"]);
             if ((int) $id_usuario) {
                 if (Usuario::deleteAll("id=:id_usuario", [":id_usuario" => $id_usuario])) {
-                    echo "Usuário excluido com sucesso! ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Usuário Excluído com sucesso!');";
+
+            echo "</script>";
+            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
                 } else {
                     echo "Erro ao excluir Usuário, tente novamente ...";
                     echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";

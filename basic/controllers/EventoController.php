@@ -101,8 +101,8 @@ class EventoController extends Controller {
             $evento=  Evento::findOne($id_evento);
             return $this->render("participante",["acontecimentos"=>$acontecimentos,"frequencias"=>$frequencias,"inscricoes"=>$inscricoes,"usuarios"=>$usuarios,"evento"=>$evento]);
         }else{
-            echo "Erro ao encontrar evento 3!, tente novamente ...";
-            echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("evento/index") . "'>";
+            echo "Erro ao encontrar evento 1!, tente novamente ...";
+            echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("evento/index") . "'>";
 
         }
     }
@@ -117,15 +117,18 @@ class EventoController extends Controller {
                    $inscricao->id_participante=Yii::$app->user->identity->id;
                    $inscricao->status="Aprovada";
                       if($inscricao->insert()){
-                        echo "Sua inscrição foi realizada com sucesso!";
-                      echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Sua inscrição foi realizada com sucesso!');";
+
+            echo "</script>";                     
+            echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("usuario/index")."'>";
                           
                       }
                       }
 
                 }else{
                     echo "Error ao se inscrever, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("usuario/index")."'>";
+                    echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("usuario/index")."'>";
                 }
     
     }
@@ -134,15 +137,18 @@ class EventoController extends Controller {
             $id = Html::encode($_POST["id"]);
                 if((int) $id){
                     if(Evento::deleteAll("id=:id",[":id" => $id])){
-                        echo "Registro excluido com sucesso! ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Registro Excluído com sucesso!');";
+
+            echo "</script>";
+                        echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("evento/index")."'>";
                     }else{
                         echo "Erro ao excluir Registro, tente novamente ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                        echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("evento/index")."'>";
                     }
                 }else{
                     echo "Erro ao excluir Registro, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("evento/index")."'>";
+                    echo "<meta http-equiv='refresh' content='1; ".Url::toRoute("evento/index")."'>";
                 }
         }else{
             return $this->redirect(["evento/index"]);
@@ -216,15 +222,17 @@ class EventoController extends Controller {
             if ((int) $id_usuario) {
                 if (Inscricao_Evento::deleteAll("id=:id_evento AND id_participante=:id_usuario",
                                     [":id_evento" => $id_evento,":id_usuario"=>$id_usuario])) {
-                    echo "Você deixou o evento com sucesso! ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/index") . "'>";
+echo "<script language='javascript' type='text/javascript'>"
+        . "alert('Você cancelou sua inscrição no evento!');";
+
+            echo "</script>";                    echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("usuario/index") . "'>";
                 } else {
                     echo "Erro ao deixar Evento, tente novamente ...";
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/index") . "'>";
+                    echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("usuario/index") . "'>";
                 }
             } else {
                 echo "Erro ao deixar Evento, tente novamente ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("usuario/listar") . "'>";
+                echo "<meta http-equiv='refresh' content='1; " . Url::toRoute("usuario/listar") . "'>";
             }
         } else {
             return $this->redirect(["usuario/index"]);
