@@ -19,6 +19,9 @@ use yii\helpers\Url;
 <div class="form-group">
     <?= $form->field($model, 'resumo')->textArea() ?>
 </div>
+<?= $form->field($model, 'area_conhecimento')->dropDownList(
+			['Computação e Tecnologia' => 'Computação e Tecnologia', 'Contabéis'=> 'Contabéis', 'Matemática'=> 'Matemática','Geografia'=>'Geografia','História'=>'História','Direito'=>'Direito','Pedagogia'=>'Pedagogia']
+			); ?> 
 
 <?= $form->field($model, "file")->fileInput() ?>
 

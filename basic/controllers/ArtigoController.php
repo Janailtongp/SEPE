@@ -33,6 +33,7 @@ class ArtigoController extends Controller
             $file = $model->file;
             $model->id_evento = $idEvento;
             $model->id_participante = Yii::$app->user->identity->id;
+            
             if ($model->file && $model->validate()){
                     $file->saveAs('artigos/' ."userID_". Yii::$app->user->identity->id."_EventoID_".$idEvento. '.' . $file->extension);
                     $table = new Artigo;
@@ -40,6 +41,7 @@ class ArtigoController extends Controller
                     $table->id_participante = $model->id_participante;
                     $table->id_evento = $model->id_evento;
                     $table->status = "Em correção";
+                    $table->area_conhecimento=$model->area_conhecimento;
                     $table->caminho = 'artigos/' ."userID_". Yii::$app->user->identity->id."_EventoID_".$idEvento. '.' . $file->extension;
                 if ($table->insert()){
                     $msg = "Dados salvos e ";

@@ -130,6 +130,7 @@ $this->params['Participante'][] = $this->title;
         <th>Data de Apresentação</th>
         <th>Hora</th>
         <th>Nota</th>
+        <th>Área Conhecimento</th>
         <th>Obs.:</th>
         <th>Anexo</th>
               </tr>
@@ -149,6 +150,8 @@ $this->params['Participante'][] = $this->title;
                         <td><?=$model3[$i]['data_apresentacao'] ?> </td>
                         <td><?=$model3[$i]['horario_apresentacao'] ?> </td>
                         <td><?=$model3[$i]['nota'] ?> </td>
+                                                <td><?=$model3[$i]['area_conhecimento'] ?> </td>
+
                         <td><?=$model3[$i]['observacao_avaliacao'] ?> </td>
                         <td><a target="_blank" href="<?=$model3[$i]['caminho'] ?>"><samp class="glyphicon glyphicon-eye-open"></samp></a> </td>
                     

@@ -18,6 +18,7 @@ class FormArtigo extends model {
     public $resumo;
     public $status;
     public $file;
+    public $area_conhecimento;
    
     public function rules() {
         return [
@@ -25,6 +26,8 @@ class FormArtigo extends model {
             ['id_evento','integer', 'message'=>'ID incorreto.'],
             ['id_participante','integer', 'message'=>'ID incorreto.'],
             ['resumo', 'required', 'message' => 'Campo obrigatório.'],
+                        ['area_conhecimento', 'required', 'message' => 'Campo obrigatório.'],
+
             ['resumo', 'ja_submeteu'],
             ['file', 'file', 
                 'skipOnEmpty' => false,
@@ -50,6 +53,7 @@ class FormArtigo extends model {
             'resumo' => 'Resumo:',
             'status' => 'Status:',
             'file' => 'Selecione arquivo:',
+            'area_conhecimento'=>'Área Conhecimento: '
             );
     }
 

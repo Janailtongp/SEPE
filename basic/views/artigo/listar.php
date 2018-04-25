@@ -17,6 +17,7 @@ use yii\widgets\LinkPager;
         <th>Data de Apresentação</th>
         <th>Hora</th>
         <th>Nota</th>
+        <th>Área Conhecimento</th>
         <th>Obs.:</th>
         <th>Anexo</th>
         <th></th>
@@ -37,7 +38,10 @@ if (3 > 0) {
                 <td><?= $model[$i]['data_apresentacao'] ?> </td>
                 <td><?= $model[$i]['horario_apresentacao'] ?> </td>
                 <td><?= $model[$i]['nota'] ?> </td>
+                                <td><?= $model[$i]['area_conhecimento'] ?> </td>
+
                 <td><?= $model[$i]['observacao_avaliacao'] ?> </td>
+                
                 <td><a target="_blank" href="<?= $model[$i]['caminho'] ?>"><samp class="glyphicon glyphicon-eye-open"></samp></a> </td>
                 <td><a href="<?= Url::toRoute(["artigo/avaliar", "id" => $model[$i]['id']]) ?>">
                         Avaliar
