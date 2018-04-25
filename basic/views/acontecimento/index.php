@@ -39,6 +39,7 @@ $f = ActiveForm::begin([
         <th>Data Fim</th>
         <th>Usuário</th>
         <th>Status</th>
+        <th>Área de Conhecimento</th>
 
                <th></th>
                <th></th>
@@ -79,6 +80,7 @@ $f = ActiveForm::begin([
                     ?></td>
             
             <td><?= $row->status ?></td>
+            <td><?= $row->area_conhecimento ?></td>
 
             <td><a href="<?= Url::toRoute(["acontecimento/editar","id"=>$row->id, "descricao"=>$row->descricao,"id_evento"=>$id])?>"><i class="
 glyphicon glyphicon-cog"></i></a>

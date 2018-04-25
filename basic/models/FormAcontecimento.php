@@ -15,6 +15,7 @@ class FormAcontecimento extends model {
     public $data_fim;
     public $status;
     public $ministrante;
+    public $area_conhecimento;
   
     public function rules() {
         return [
@@ -27,6 +28,8 @@ class FormAcontecimento extends model {
             ['data_fim', 'required', 'message' => 'Campo obrigatório.'],
             ['status','required', 'message' => 'Campo obrigatório.'],
             ['tipo','required', 'message' => 'Campo obrigatório.'],
+            ['area_conhecimento','required', 'message' => 'Campo obrigatório.'],
+
             ['ministrante','required', 'message' => 'Campo obrigatório.'],
             ['ministrante', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
             ];
@@ -39,6 +42,8 @@ class FormAcontecimento extends model {
             'data_inicio' => 'Data do Inicio do Acontecimento',
             'tipo'=>'Tipo:',
             'status'=>'Status:',
+            'area_conhecimento'=>'Área Conhecimento:',
+
             'id_usuario'=>'ID do Usuário:',
             'id_evento'=>'ID do Evento:',
             'ministrante'=>'Ministrante(s)',

@@ -166,6 +166,8 @@ class AcontecimentoController extends Controller {
                 $table->data_inicio = $model->data_inicio;
                 $table->data_fim = $model->data_fim;
                 $table->tipo = $model->tipo;
+                $table->area_conhecimento = $model->area_conhecimento;
+
                 $table->id_usuario = Yii::$app->user->identity->id;
                 //$table->id_usuario = $model->id_usuario;
                 $table->status = $model->status;
@@ -335,6 +337,8 @@ class AcontecimentoController extends Controller {
                     $model->ministrante = $table->ministrante;  
                     $model->data_inicio = $table->data_inicio;
                     $model->data_fim = $table->data_fim;
+              
+
                 } else {
                     return $this->redirect(["acontecimento/index","id"=>$id_evento]);
                 }
@@ -357,12 +361,14 @@ class AcontecimentoController extends Controller {
                    $table->tipo = $model->tipo;
                    $table->status= $model->status;
                    $table->ministrante = $model->ministrante;
+                $table->area_conhecimento = $model->area_conhecimento;
 
                     $table->data_inicio = $model->data_inicio;
                     $table->data_fim = $model->data_fim;
                     
-                    if ($table->update()) {
-                        $msg = "Nova:".$model->descricao;
+                    if ($table->update()) {                        
+
+                        $msg = "Registro Atualizado!";
                     } else {
                         $msg = "Registro não pode ser atualizado".$table->id;
                     }
