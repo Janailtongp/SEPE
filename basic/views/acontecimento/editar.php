@@ -34,6 +34,7 @@ $form = ActiveForm::begin(
 			); ?> 
 <?= $form->field($model, 'data_inicio')->input("text"); ?>
 <?= $form->field($model, 'data_fim')->input("text"); ?>
+<?= $form->field($model, 'qtd')->input("text"); ?>
 
 
 

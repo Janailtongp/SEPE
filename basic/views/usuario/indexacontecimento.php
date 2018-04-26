@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use app\controllers\AcontecimentoController;
 $this->title = 'Participante';
 $this->params['Participante'][] = $this->title;
 ?>
@@ -34,7 +35,7 @@ $this->params['Participante'][] = $this->title;
         <th>Local do Acontecimento</th>
         <th>Data Inicio</th>
         <th>Data Fim</th>
-        <th>Usuário</th>
+        <th>Responsável</th>
         <th></th>
               </tr>
             <?php
@@ -69,7 +70,8 @@ $this->params['Participante'][] = $this->title;
                                             <?= Html::beginForm(Url::toRoute("acontecimento/deixaracontecimento"), "POST") ?>
                                                 <input type="hidden" name="id_evento" value="<?= $id?>">
                                                 <input type="hidden" name="descricao" value="<?= $descricao?>">
-
+                                                <input type="hidden" name="id_acontecimento" value="<?= $model[$i]['id']?>">
+                                                
                                                 <input type="hidden" name="id_inscricao" value="<?= $model[$i]['id_inscricao']?>">
                                                 <button type="submit" class="btn btn-primary">Sair</button>
                                             <?= Html::endForm()?>
@@ -87,14 +89,15 @@ $this->params['Participante'][] = $this->title;
 <table class="table table-bordered">
     <caption><h3><b>Outros Acontecimentos: <?php echo $descricao;?></b></h3></caption>
             <tr>
-                     <th>Descrição</th>
+        <th>Descrição</th>
         <th>Tipo</th>
-        <th>Evento</th>
         <th>Ministrante(s)</th>
         <th>Local do Acontecimento</th>
         <th>Data Inicio</th>
         <th>Data Fim</th>
-        <th>Usuário</th>
+        <th>Responsável</th>
+        <th>Vagas</th>
+        <th></th>
               </tr>
             <?php
             $tamanho2 = count($model2);
@@ -110,20 +113,26 @@ $this->params['Participante'][] = $this->title;
                     }
                     if($ja_me_inscrevi==0){
                         echo "<tr>";
-                        echo"<tds".$model2[$i]['descricao']."</td>";
-                       echo "<td>".$model2[$i]['tipo']."</td>";
-                         echo " <td>".$model2[$i]['evento'] ."</td>";
-                         echo " <td>".$model2[$i]['ministrante'] ." </td>";
-                          echo " <td>".$model2[$i]['local_acontecimento']." </td>";
-                          echo " <td>".$model2[$i]['data_inicio']." </td>";
-                          echo "<td>".$model2[$i]['data_fim'] ."</td>";
-                          echo " <td>".$model2[$i]['usuario']." </td>";
-                        echo  "<td>".Html::beginForm(Url::toRoute("acontecimento/inscrever"), "POST")."
-                               <input type='hidden' name='id_evento' value='". $id."'>
-                                                <input type='hidden' name='descricao' value='". $descricao."'>
-                                                <input type='hidden' name='id' value='". $model2[$i]['id']."'>
-                                                <button type='submit' class='btn btn-primary'>Inscrever-se</button>
-                                            ".Html::endForm().".</td></tr>";
+                        echo"<td>".$model2[$i]['descricao']."</td>";
+                        echo "<td>".$model2[$i]['tipo']."</td>";
+                        echo "<td>".$model2[$i]['ministrante'] ." </td>";
+                        echo "<td>".$model2[$i]['local_acontecimento']." </td>";
+                        echo "<td>".$model2[$i]['data_inicio']." </td>";
+                        echo "<td>".$model2[$i]['data_fim'] ."</td>";
+                        echo "<td>".$model2[$i]['usuario']." </td>";
+                        $qtd_inscritos  = AcontecimentoController::Total_participantes_Acontecimento($model2[$i]['id']);
+                        echo "<td>".($model2[$i]['qtd']-$qtd_inscritos)."/".$model2[$i]['qtd']." </td>";
+                        if($model2[$i]['qtd'] > $qtd_inscritos){
+                            echo  "<td>".Html::beginForm(Url::toRoute("acontecimento/inscrever"), "POST")."
+                                   <input type='hidden' name='id_evento' value='". $id."'>
+                                                    <input type='hidden' name='descricao' value='". $descricao."'>
+                                                    <input type='hidden' name='id' value='". $model2[$i]['id']."'>
+                                                    <button type='submit' class='btn btn-primary'>Inscrever-se</button>
+                                                ".Html::endForm().".</td></tr>";
+                        }  else {
+                            echo "<td class='alert alert-danger'>VAGAS ESGOTADAS</td>";
+                        }
+                        
                    }
                 }
             }

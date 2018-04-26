@@ -16,6 +16,7 @@ class FormAcontecimento extends model {
     public $status;
     public $ministrante;
     public $area_conhecimento;
+    public $qtd;
   
     public function rules() {
         return [
@@ -29,9 +30,10 @@ class FormAcontecimento extends model {
             ['status','required', 'message' => 'Campo obrigatório.'],
             ['tipo','required', 'message' => 'Campo obrigatório.'],
             ['area_conhecimento','required', 'message' => 'Campo obrigatório.'],
-
             ['ministrante','required', 'message' => 'Campo obrigatório.'],
             ['ministrante', 'match', 'pattern' => "/^[a-záéíóúñâêôûãõ ]+$/i", 'message' => 'Apenas letras.'],
+            ['qtd', 'required', 'message' => 'Campo obrigatório.'],
+            ['qtd','integer', 'message'=>'Apenas números.'],
             ];
     }
 
@@ -43,11 +45,11 @@ class FormAcontecimento extends model {
             'tipo'=>'Tipo:',
             'status'=>'Status:',
             'area_conhecimento'=>'Área Conhecimento:',
-
             'id_usuario'=>'ID do Usuário:',
             'id_evento'=>'ID do Evento:',
             'ministrante'=>'Ministrante(s)',
             'data_fim' => 'Data do Fim do Acontecimento:',
+            'qtd' => 'Quantidade de vagas:',
             );
     }
 

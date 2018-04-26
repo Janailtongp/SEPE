@@ -1,4 +1,3 @@
-
 <?php
 
 use yii\helpers\Url;
@@ -6,6 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
+use app\controllers\AcontecimentoController;
 
 $f = ActiveForm::begin([
             "method" => "get",
@@ -44,6 +44,7 @@ $f = ActiveForm::begin([
         <th>Tipo</th>
         <th>Evento</th>
         <th>Ministrante(s)</th>
+        <th>Vagas</th>
         <th>Local do Acontecimento</th>
         <th>Data Inicio</th>
         <th>Data Fim</th>
@@ -74,6 +75,8 @@ $f = ActiveForm::begin([
                     ?>
             </td>
             <td><?= $row->ministrante ?></td>
+            <?php $qtd_inscritos  = AcontecimentoController::Total_participantes_Acontecimento($row->id);?>
+            <td><?php echo ($row->qtd - $qtd_inscritos)."/".$row->qtd ?></td>
             <td><?= $row->local_acontecimento ?></td>
             <td><?= $row->data_inicio ?></td>
             <td><?= $row->data_fim ?></td>

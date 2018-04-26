@@ -34,7 +34,7 @@ class AcontecimentoController extends Controller {
         
         public function Outros_acontecimentos($id_evento) {
             //Selecionar todos os eventos Que eu não participo
-           $sql = (new \yii\db\Query())->select('a.descricao descricao,a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a,evento e,usuario u')
+           $sql = (new \yii\db\Query())->select('a.descricao descricao,a.qtd qtd, a.tipo tipo,u.nome usuario,a.ministrante ministrante,a.local_acontecimento local_acontecimento,a.data_inicio data_inicio,a.data_fim data_fim,e.descricao evento,a.id id')->from('acontecimento a,evento e,usuario u')
                         ->where('a.id_evento=e.id')
                         ->andWhere('e.id=:id', array(':id'=>$id_evento))
                         ->andWhere(('a.id_usuario = u.id'))->all();
@@ -167,6 +167,7 @@ class AcontecimentoController extends Controller {
                 $table->data_fim = $model->data_fim;
                 $table->tipo = $model->tipo;
                 $table->area_conhecimento = $model->area_conhecimento;
+                $table->qtd = $model->qtd;
 
                 $table->id_usuario = Yii::$app->user->identity->id;
                 //$table->id_usuario = $model->id_usuario;
@@ -183,6 +184,7 @@ class AcontecimentoController extends Controller {
                     $model->status = null;
                     $model->id_evento = null;
                     $model->ministrante = null;
+                    $model->qtd = null;
                 } else {
                     $msg = "Erro ao cadastrar evento :(";
                 }
@@ -267,7 +269,7 @@ echo "<script language='javascript' type='text/javascript'>"
                 $table = new Frequencia_Acontecimento();
                 $table->id_acontecimento = $id_acontecimento;
                 $table->id_participante = $participantes[$i]['id'];
-                $table->status="Presente";
+                $table->status="Faltou";
                 $table->insert();
                }
             }
@@ -345,6 +347,7 @@ echo "<script language='javascript' type='text/javascript'>"
                     $model->ministrante = $table->ministrante;  
                     $model->data_inicio = $table->data_inicio;
                     $model->data_fim = $table->data_fim;
+                    $model->qtd = $table->qtd;
               
 
                 } else {
@@ -373,6 +376,7 @@ echo "<script language='javascript' type='text/javascript'>"
 
                     $table->data_inicio = $model->data_inicio;
                     $table->data_fim = $model->data_fim;
+                    $table->qtd = $model->qtd;
                     
                     if ($table->update()) {                        
 
@@ -396,14 +400,22 @@ echo "<script language='javascript' type='text/javascript'>"
             $id_inscricao = Html::encode($_POST['id_inscricao']);
             $id_evento = Html::encode($_POST['id_evento']);
             $descricao = Html::encode($_POST['descricao']);
+            $id_acontecimento = Html::encode($_POST['id_acontecimento']);
 
             $id_usuario = Yii::$app->user->identity->id;
             if ((int) $id_usuario) {
-                if (Inscricao_Acontecimento::deleteAll("id=:id_inscricao",
-                                    [":id_inscricao" => $id_inscricao])) {
-echo "<script language='javascript' type='text/javascript'>"
-        . "alert('Você deixou este acontecimento!');";
-
+                if (Inscricao_Acontecimento::deleteAll("id=:id_inscricao",[":id_inscricao" => $id_inscricao])) {
+                                 echo "<script language='javascript' type='text/javascript'>"
+                                        . "alert('Você deixou este acontecimento!');";
+                        if (Frequencia_Acontecimento::deleteAll("id_acontecimento=:id_acontecimento AND id_participante=:id_part",
+                                [":id_acontecimento" => $id_acontecimento,"id_part"=>Yii::$app->user->identity->id])) {
+                                echo "<script language='javascript' type='text/javascript'>"
+                                            . "alert('Você deixou este acontecimento!');";
+                        }else{
+                            echo "Erro ao deixar Evento, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='1; " .Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
+                        }
+                 
             echo "</script>";                 
             echo "<meta http-equiv='refresh' content='1; " . Url::toRoute(["usuario/indexacontecimento","id"=>$id_evento,"descricao"=>$descricao]) . "'>";
                 } else {
@@ -418,4 +430,11 @@ echo "<script language='javascript' type='text/javascript'>"
             return $this->redirect(["usuario/index"]);
         }
     }
+    
+    public function Total_participantes_Acontecimento($id) {
+        $sql = (new \yii\db\Query())->select('*')->from('inscricao_acontecimento')
+                        ->Where('id_acontecimento=:id', array(':id'=>$id))->all();
+                return count($sql);
+    }
+    
 }

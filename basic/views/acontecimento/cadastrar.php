@@ -28,6 +28,7 @@ use yii\helpers\Url;
 			); ?> 
 <?= $form->field($model, 'data_inicio')->input("date"); ?>
 <?= $form->field($model, 'data_fim')->input("date"); ?>
+<?= $form->field($model, 'qtd')->input("text"); ?>
 
 <div class='form-group'>
     <?= HTML::submitButton('Cadastrar',['class'=>'btn btn-primary'])?>
