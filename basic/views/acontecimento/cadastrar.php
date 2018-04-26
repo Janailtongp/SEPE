@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
 <h2>Cadastrar Acontecimento</h2>
 <hr>
-<a href="<?= Url::toRoute(["acontecimento/index","id"=>$id_evento])?>">Listar Acontecimentos</a>
+<a href="<?= Url::toRoute(["acontecimento/index","id"=>$id_evento])?>" class="btn btn-success"> Listar Acontecimentos</a>
 
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 

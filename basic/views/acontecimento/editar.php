@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
-<a href="<?= Url::toRoute(["acontecimento/index","id"=>Html::encode($_GET['id_evento'])])?>">Listar Acontecimentos</a>
+<a href="<?= Url::toRoute(["acontecimento/index","id"=>Html::encode($_GET['id_evento'])])?>" class="btn btn-success">Listar Acontecimentos</a>
 <h1>Editar Acontecimento <?= Html::encode($_GET['descricao'])?> ...</h1>
 <div class="alert alert-sucess" role="alert"><?=$msg?></div>
 <?php

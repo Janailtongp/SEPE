@@ -3,7 +3,15 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
-<a href="<?= Url::toRoute("evento/index")?>">Listar Eventos</a>
+<div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("evento/index")?>">Eventos</a></li>
+    <li><a href="<?=Url::toRoute("usuario/listar")?>">Usuários</a></li>
+    <li><a href="<?=Url::toRoute("propostas/index")?>">Propostas</a></li>
+  </ul>
+    
+</div>
 <h1>Editar Evento <?= Html::encode($_GET['descricao'])?> ...</h1>
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 <?php

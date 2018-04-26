@@ -11,6 +11,19 @@ use yii\data\Pagination;
 use yii\widgets\LinkPager;
 
 ?>
+<div clas="row">
+    
+   <div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("evento/index")?>">Eventos</a></li>
+    <li><a href="<?=Url::toRoute("usuario/listar")?>">Usuários</a></li>
+    <li><a href="<?=Url::toRoute("propostas/index")?>">Propostas</a></li>
+  </ul>
+    
+</div>
+    
+</div>
     <h1>Relatório dos Participantes do Evento:<?php echo $evento->descricao;?> </h1>
 
 <table class="table table-striped">
@@ -70,8 +83,11 @@ use yii\widgets\LinkPager;
                     echo "<td></td>";
                 }
                 }
-              
+                if($n_acontecimento==0){
+                    $porcentagem=0;
+                }else{
                 $porcentagem= ($n_participacoes/$n_acontecimento) *100;
+                }
                 echo "<td>".$porcentagem." %</td>";
                 echo "</tr>";
             } ?> 

@@ -5,10 +5,19 @@ use yii\helpers\Url;
 $this->title = 'Participante';
 $this->params['Participante'][] = $this->title;
 ?>
+<div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("usuario/index")?>">Eventos Abertos</a><br/>
+</li>
+    <li><a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
+</li>
+  </ul>
+    
+</div>
 <h3>Bem vindo(a) ao sistema SEPE</h3><br/>
 <h4>Aqui você fica por dentro de tudo o que acontece no Seminário de Ensino, Pesquisa e Extensão do CERES-UFRN </h4>
-<a href="<?=Url::toRoute("usuario/index")?>">Eventos Abertos</a><br/>
-<a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
+
 
 <table class="table table-striped">
     <caption><h3><b>Minhas Inscrições</b></h3></caption>

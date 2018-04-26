@@ -4,9 +4,21 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 ?>
+<div clas="row">
+    
+   <div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("evento/index")?>">Eventos</a></li>
+    <li><a href="<?=Url::toRoute("usuario/listar")?>">Usuários</a></li>
+    <li><a href="<?=Url::toRoute("propostas/index")?>">Propostas</a></li>
+  </ul>
+    
+</div>
+    
+</div>
 <h2>Cadastrar Evento</h2>
 <hr>
-<a href="<?= Url::toRoute("evento/index")?>">Listar Eventos</a>
 
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 

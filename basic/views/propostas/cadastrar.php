@@ -2,7 +2,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-
+$this->title = 'Cadastrar Proposta';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <h2>Cadastrar Proposta</h2>
 <hr>

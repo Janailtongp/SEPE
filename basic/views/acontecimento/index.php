@@ -13,7 +13,17 @@ $f = ActiveForm::begin([
             "enableClientValidation" => true,
         ])
 ?>
-<a href="<?=Url::toRoute("evento/index")?>">Lista de eventos</a><br/>
+<div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("evento/index")?>">Eventos</a></li>
+    <li><a href="<?=Url::toRoute("usuario/listar")?>">Usuários</a></li>
+    <li><a href="<?=Url::toRoute("propostas/index")?>">Propostas</a></li>
+    <li><a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
+</li>
+  </ul>
+    
+</div>
 <div class="form-group">
     <?= $f->field($form, "q")->input("search") ?>
 </div>

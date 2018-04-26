@@ -12,6 +12,8 @@ $this->params['Chefe de departamento'][] = $this->title;
 
         <p class="lead">
             <a href="<?=Url::toRoute("evento/index")?>" class="btn btn-primary">Eventos</a> 
+            <a href="<?=Url::toRoute("usuario/meusdados")?>" class="btn btn-warning">Meus Dados</a>
+
 <br/>
             
         </p>

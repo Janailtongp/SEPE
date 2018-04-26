@@ -16,6 +16,15 @@ $f = ActiveForm::begin([
             "enableClientValidation" => true,
         ])
 ?>
+<div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("evento/index")?>">Eventos</a></li>
+    <li><a href="<?=Url::toRoute("usuario/listar")?>">Usuários</a></li>
+    <li><a href="<?=Url::toRoute("propostas/index")?>">Propostas</a></li>
+  </ul>
+    
+</div>
 <div class="form-group">
 <?= $f->field($form, "q")->input("search") ?>
 </div>

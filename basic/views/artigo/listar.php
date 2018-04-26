@@ -6,7 +6,17 @@ use yii\widgets\ActiveForm;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
 ?>
-<a href="<?=Url::toRoute("evento/index")?>" >Voltar para EVENTOS</a> 
+<div clas="row">
+    
+    <ul class="breadcrumb">
+    <li><a href="<?=Url::toRoute("evento/index")?>">Eventos</a></li>
+    <li><a href="<?=Url::toRoute("usuario/listar")?>">Usuários</a></li>
+    <li><a href="<?=Url::toRoute("propostas/index")?>">Propostas</a></li>
+    <li><a href="<?=Url::toRoute("usuario/meusdados")?>">Alterar meus dados</a>
+</li>
+  </ul>
+    
+</div>
 <h3>Lista de submissões para o evento: <?= $titulo ?></h3>
 
 <table class="table table-bordered">
