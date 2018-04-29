@@ -265,7 +265,7 @@ echo "<script language='javascript' type='text/javascript'>"
                         },
                     ],
                     [
-                        'actions' =>['index','cadastrar',"delete","editar"],
+                        'actions' =>['index'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' =>function($rule, $action){

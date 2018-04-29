@@ -203,6 +203,49 @@ echo "<script language='javascript' type='text/javascript'>"
         }
         return $this->render("editar",["msg"=>$msg, "model"=>$model]);
     }
+    
+    public function behaviors(){
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['delete',"editar","index","cadastrar"],
+                'rules' => [
+                    [
+                        'actions' =>['delete',"editar","index","cadastrar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserAdmin(Yii::$app->user->identity->id); 
+                        },
+                    ],
+                    [
+                        'actions' =>['delete',"editar","index","cadastrar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserChefe(Yii::$app->user->identity->id); 
+                        },  
+                    ],
+                    [
+                        'actions' =>['delete',"editar","index","cadastrar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserSimple(Yii::$app->user->identity->id); 
+                        },  
+                    ],            
+                ],                
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+   }
+    
+    
    }
    
    

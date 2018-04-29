@@ -274,8 +274,13 @@ echo "<script language='javascript' type='text/javascript'>"
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['listar','excluir', "meusdados","editar","index","index2","index3"],
+                'only' => ['listar','excluir', "meusdados","editar","index","index2","index3","cadastrar"],
                 'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['cadastrar'],
+                        'roles' => ['?'],
+                    ],
                     [
                         'actions' =>['listar','excluir', "meusdados","editar","index3"],
                         'allow' => true,

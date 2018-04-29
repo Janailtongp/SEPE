@@ -437,4 +437,45 @@ echo "<script language='javascript' type='text/javascript'>"
                 return count($sql);
     }
     
+    public function behaviors(){
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index','cadastrar',"delete","editar"],
+                'rules' => [
+                    [
+                        'actions' =>['index','cadastrar',"delete","editar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserAdmin(Yii::$app->user->identity->id); 
+                        },
+                    ],
+                    [
+                        'actions' =>['index','cadastrar',"delete","editar"],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserChefe(Yii::$app->user->identity->id); 
+                        },  
+                    ],
+                    [
+                        'actions' =>[''],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserSimple(Yii::$app->user->identity->id); 
+                        },  
+                    ],            
+                ],                
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+   }
+    
 }
