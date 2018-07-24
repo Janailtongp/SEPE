@@ -13,7 +13,14 @@ create table usuario(
 	instituicao text not null,
 	primary key(id)
 );
-
+create table noticia (
+	id int auto_increment not null,
+	titulo text not null,
+	corpo text not null,
+	data_noticia text not null,
+	
+	primary key(id)
+);
 create table evento(
 	id int auto_increment not null,
 	local_evento text not null,
