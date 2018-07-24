@@ -21,6 +21,14 @@ create table noticia (
 	
 	primary key(id)
 );
+create table site (
+	id int auto_increment not null,
+	titulo text not null,
+	imagem text not null,
+	descricao text not null,
+	
+	primary key(id)
+);
 create table evento(
 	id int auto_increment not null,
 	local_evento text not null,
