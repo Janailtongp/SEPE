@@ -18,7 +18,7 @@ create table noticia (
 	titulo text not null,
 	corpo text not null,
 	data_noticia text not null,
-	
+	autor text not null,
 	primary key(id)
 );
 create table site (

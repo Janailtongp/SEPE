@@ -10,6 +10,13 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
+use app\models\Evento;
+use app\models\Usuario;
+use app\models\FormSite;
+use app\models\Site;
+use yii\helpers\Html;
+use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 class SiteController extends Controller
 {
@@ -61,8 +68,9 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        return $this->render('index');
+    {   
+        $sql = (new \yii\db\Query())->select('*')->from('site')->all();
+        return $this->render('index',["sql" => $sql]);
     }
 
     /**
@@ -141,4 +149,78 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+     
+     public function actionPainel()
+    {
+       $model = new FormSite;
+       $msg = null;
+       $link = null;
+       $sql = (new \yii\db\Query())->select('*')->from('site')->all();
+       if(count($sql) == 0){
+            if ($model->load(Yii::$app->request->post())) {
+                $model->imagem = UploadedFile::getInstance($model,'imagem');
+                $file = $model->imagem;
+                if ($model->validate()){
+                        if(!empty($model->imagem)){
+                            $file->saveAs('imagens/' ."capa". '.' . $file->extension);
+                            $table->imagem = 'imagens/' ."capa". '.' . $file->extension; 
+                            $msg = "+ Imagem salva com sucesso.";
+                        }else{
+                            $msg = "+ O site ainda não possui imagens.";
+                        }
+                        $table = new Site;
+                        $table->descricao = $model->descricao;
+                        $table->titulo = $model->titulo;
+                                          
+                    if ($table->insert()){
+                        $msg = "<br/>+ Dados cadastrados.";
+                        $model->descricao = null;
+                        $model->titulo = null;
+                        $model->imagem = null;
+                        echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/painel") . "'>";
+                    } else {
+                        $msg = "<br/> +Erro ao cadastrar dados do site :(";
+                    }
+                        $msg .= "<br/> +Site Cadastrado com sucesso!";
+                }
+
+            }
+       }else if(count($sql) == 1){
+           $table = Site::findOne(1);
+                if($table){
+                    $model->descricao = $table->descricao;
+                    $model->titulo = $table->titulo;
+                    $link = $table->imagem;                   
+                }                
+             if ($model->load(Yii::$app->request->post())) {
+                $model->imagem = UploadedFile::getInstance($model,'imagem');
+                $file = $model->imagem;
+                   if ($model->validate()){
+                       if(!empty($model->imagem)){
+                            $file->saveAs('imagens/' ."capa". '.' . $file->extension);
+                            $table->imagem = 'imagens/' ."capa". '.' . $file->extension;
+                            $msg = "+ Imagem atualizada.";
+                       }else{
+                           $msg = "+ A imagem atual foi mantida.";
+                       }
+                        $table->descricao = $model->descricao;
+                        $table->titulo = $model->titulo;
+                    if ($table->update()){
+                        $msg .= "<br/>+ Dados atualizados.";
+                        $model->descricao = null;
+                        $model->titulo = null;
+                        $model->imagem = null;
+                        echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/painel") . "'>";
+                    } else {
+                        $msg .= "<br/>+ Título e descrição não divergem do anterior.";
+                        echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/painel") . "'>";
+                    }
+                }
+                    }else{
+                        $model->getErrors();
+                    }
+        }
+        return $this->render("painel", ["model" => $model, "msg" => $msg, "link"=>$link]);
+    }
+    
 }
