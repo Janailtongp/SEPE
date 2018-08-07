@@ -14,6 +14,8 @@ use app\models\Evento;
 use app\models\Usuario;
 use app\models\FormSite;
 use app\models\Site;
+use app\models\Noticia;
+use app\models\FormNoticiaCadastrar;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
@@ -28,15 +30,24 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout','painel','cadastrarnoticia'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' =>['painel','cadastrarnoticia'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' =>function($rule, $action){
+                        return User::isUserAdmin(Yii::$app->user->identity->id); 
+                        },
+                    ],
                 ],
-            ],
+                
+                ],  
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -222,5 +233,33 @@ class SiteController extends Controller
         }
         return $this->render("painel", ["model" => $model, "msg" => $msg, "link"=>$link]);
     }
+    
+    public function actionCadastrarnoticia(){
+        $model = new FormNoticiaCadastrar;
+        $msg =null;
+          if ($model->load(Yii::$app->request->post())) {
+                if ($model->validate()){
+                        $table = new Noticia;
+                        $table->titulo = $model->titulo;
+                        $table->corpo = $model->corpo;
+                        $table->data_noticia = date('d/m/Y', time());
+                        $sql = (new \yii\db\Query())->select('*')->from('usuario')->where('id =:idUSER', array(':idUSER'=>Yii::$app->user->identity->id))->all();
+                        $table->autor = $sql[0]['nome'];
+                                          
+                    if ($table->insert()){
+                        $msg = "<br/>+ Notícia cadastrada.";
+                        $model->corpo = null;
+                        $model->titulo = null;
+                        echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/cadastrarnoticia") . "'>";
+                    } else {
+                        $msg = "<br/> +Erro ao cadastrar notícia no site :(";
+                    }
+                        $msg .= "<br/> +Notícia publicada com sucesso!";
+                }
+
+            }
+        return $this->render("novaNoticia", ["model" => $model, "msg" => $msg]);
+    }
+    
     
 }

@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/views/site/index.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/controllers/ArtigoController.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/views/layouts/main.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/controllers/SiteController.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/models/Site.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/views/acontecimento/lista_pdf.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/views/site/painel.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/views/artigo/index.php</file>
+            <file>file:/C:/xampp/htdocs/SEPE/basic/models/FormSite.php</file>
+        </group>
     </open-files>
 </project-private>
