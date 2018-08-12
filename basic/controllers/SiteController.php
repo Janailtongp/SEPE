@@ -19,7 +19,8 @@ use app\models\FormNoticiaCadastrar;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
-
+use app\models\SearchNoticia;
+use yii\data\Pagination;
 class SiteController extends Controller
 {
     /**
@@ -30,7 +31,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout','painel','cadastrarnoticia'],
+                'only' => ['logout','painel','cadastrarnoticia','listarnoticias','editarnoticia','deletarnoticia'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -38,7 +39,7 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' =>['painel','cadastrarnoticia'],
+                        'actions' =>['painel','cadastrarnoticia','listarnoticias','editarnoticia','deletarnoticia'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' =>function($rule, $action){
@@ -261,5 +262,157 @@ class SiteController extends Controller
         return $this->render("novaNoticia", ["model" => $model, "msg" => $msg]);
     }
     
+    public function actionListarnoticias(){
+        $form = new SearchNoticia;
+        $search = null;
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $search = Html::encode($form->q);
+                $table = Noticia::find()->where(["like", "id", $search])
+                        ->orWhere(["like", "titulo", $search])
+                        ->orWhere(["like", "corpo", $search])
+                        ->orWhere(["like", "autor", $search])->orderBy([
+                    'data_noticia' => SORT_DESC
+                     ]);
+                $count = clone $table;
+                $pages = new Pagination([
+                    "pageSize" => 10,
+                    "totalCount" => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+            } else {
+                $form->getErrors();
+            }
+        } else {
+            $table = Noticia::find()->orderBy([
+                    'data_noticia' => SORT_DESC
+                     ]);
+            $count = clone $table;
+            $pages = new Pagination([
+                "pageSize" => 10,
+                "totalCount" => $count->count(),
+            ]);
+            $model = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+        }
+        
+        
+        return $this->render("listarNoticia", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages]);
+    }
+    
+    
+    public function actionEditarnoticia(){
+        $model = new FormNoticiaCadastrar();
+        $msg = null;
+        //Exibir os dados pegando do GET
+         if(Yii::$app->request->get("id_noticia")){
+            $id_noticia = Html::encode($_GET['id_noticia']);
+            if((int) $id_noticia){
+                $table = Noticia::findOne($id_noticia);
+                if($table){
+                    $model->titulo = $table->titulo;
+                    $model->corpo = $table->corpo;
+                    $model->id = $id_noticia;
+                }else{
+                     return $this->redirect(["site/listarnoticias"]);
+                }
+            }  else {
+                return $this->redirect(["site/listarnoticias"]);
+            }
+        }else{
+            return $this->redirect(["site/listarnoticias"]);
+        }
+        // Fazer a alteração dos dados 
+        
+        if($model->load(Yii::$app->request->post())){
+            if($model->validate()){
+                $table = Noticia::findOne($model->id);
+                if($table){
+                    $table->titulo = $model->titulo;
+                    $table->corpo = $model->corpo;
+                    $table->data_noticia = date('d/m/Y', time());
+                    $sql = (new \yii\db\Query())->select('*')->from('usuario')->where('id =:idUSER', array(':idUSER'=>Yii::$app->user->identity->id))->all();
+                    $table->autor = $sql[0]['nome'];
+                    if($table->update()){
+                        $msg = "Registro atualizado com sucesso!";
+                    } else {
+                        $msg = "Registro não pode ser atualizado!";
+                    }
+                }else{
+                    $msg = "Registro selecionado não encontrado! ";
+                }
+            }else{
+                $model->getErrors();
+            }
+        }
+        return $this->render("editarNoticia",["msg"=>$msg, "model"=>$model]);
+    }
+    
+     public function actionExibirnoticia(){
+         $sql=null;
+         if(Yii::$app->request->get("id_noticia")){
+            $id_noticia = Html::encode($_GET['id_noticia']);
+            if((int) $id_noticia){
+                $table = Noticia::findOne($id_noticia);
+                if($table){
+                    $sql = (new \yii\db\Query())->select('*')->from('noticia')->where('id =:idNOTICIA', array(':idNOTICIA'=>$id_noticia))->all();
+                }else{
+                    return $this->redirect(["site/listarnoticiasall"]);
+                }
+            }else {
+                return $this->redirect(["site/listarnoticiasall"]);
+            }
+        }else{
+            return $this->redirect(["site/listarnoticiasall"]);
+        }
+        return $this->render("exibirNoticia", ["sql"=>$sql]);
+    }
+    public function actionDeletarnoticia() {
+        if (Yii::$app->request->post()) {
+            $id_noticia = Html::encode($_POST["id_noticia"]);
+            if ((int) $id_noticia) {
+                if (Noticia::deleteAll("id=:id_noticia", [":id_noticia" => $id_noticia])) {
+                        echo "<script language='javascript' type='text/javascript'>"
+                        . "alert('Notícia Excluído com sucesso!');</script>";
+                        echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/listarnoticias") . "'>";
+                } else {
+                    echo "Erro ao excluir notícia, tente novamente ...";
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/listarnoticias") . "'>";
+                }
+            } else {
+                echo "Erro ao excluir notícia, tente novamente ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("site/listarnoticias") . "'>";
+            }
+        } else {
+            return $this->redirect(["site/listarnoticias"]);
+        }
+    }
+    public function actionListarnoticiasall(){
+       $table = Noticia::find()->orderBy([
+                    'data_noticia' => SORT_DESC
+                     ]);
+            $count = clone $table;
+            $pages = new Pagination([
+                "pageSize" => 10,
+                "totalCount" => $count->count(),
+            ]);
+            $model = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+        
+        return $this->render("listarNoticias_all", ["model" => $model, "pages" => $pages]);
+    }
+    public function noticias_capa() {
+        $sql = (new \yii\db\Query())->select('*')->from('noticia')->orderBy([
+                    'data_noticia' => SORT_DESC
+                     ])->all();
+                return $sql;
+    }
     
 }

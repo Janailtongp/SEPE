@@ -9,6 +9,18 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\models\User;
+
+$LINK = '/site/index';
+if(isset(Yii::$app->user->identity->id)){
+    if(User::isUserChefe(Yii::$app->user->identity->id)){
+        $LINK = '/usuario/index2';
+    }else if(User::isUserAdmin(Yii::$app->user->identity->id)){
+        $LINK = '/usuario/index3';         
+    }else{
+        $LINK = '/usuario/index';  
+    }
+}
 
 AppAsset::register($this);
 ?>
@@ -38,8 +50,26 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Início', 'url' => ['/site/index']],
-            ['label' => 'Cadastre-se', 'url' => ['/usuario/cadastrar']],
+            
+            Yii::$app->user->isGuest ? (
+               ['label' => 'Início', 'url' => ['/site/index']]
+            ) : (
+                '<li>'
+                . Html::beginForm([$LINK], 'post')
+                . Html::submitButton(
+                    '<b>Menu principal</b>',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            ),
+            
+            Yii::$app->user->isGuest ? (
+               ['label' => 'Cadastre-se', 'url' => ['/usuario/cadastrar']]
+            ) : (
+                '<li></li>'
+            ),
+            
             ['label' => 'Sobre', 'url' => ['/site/about']],
             ['label' => 'Contato', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
@@ -54,6 +84,9 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             )
+            
+            
+            
         ],
     ]);
     NavBar::end();

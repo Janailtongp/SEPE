@@ -6,7 +6,7 @@ use dosamigos\ckeditor\CKEditor;
 use dosamigos\ckeditor\CKEditorInline;
 ?>
 <h3>Cadastrar notícia</h3>
-<a href="<?=Url::toRoute("usuario/index")?>">Voltar para o Menu</a><br/>
+<a href="<?=Url::toRoute("usuario/index3")?>">Voltar para o Menu</a><br/>
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 <?php $form = ActiveForm::begin([
      "method" => "post",

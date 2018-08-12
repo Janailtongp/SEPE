@@ -256,10 +256,10 @@ echo "<script language='javascript' type='text/javascript'>"
                     if($table->update()){
                         $msg = "Registro atualizado com sucesso!";
                     } else {
-                        $msg = "Registro não pode ser atualizado 1"; //aqui
+                        $msg = "Registro não pode ser atualizado!"; //aqui
                     }
                 }else{
-                    $msg = "Registro selecionado não encontrado! 2";
+                    $msg = "Registro selecionado não encontrado!";
                 }
             }else{
                 $model->getErrors();

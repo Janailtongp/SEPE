@@ -1,6 +1,6 @@
 <?php
 /* @var $this yii\web\View */
-
+use yii\helpers\Url;
 $this->title = 'UFRN/CERES - SEPE';
 ?>
 <div class="site-index">
@@ -68,66 +68,30 @@ $this->title = 'UFRN/CERES - SEPE';
       </div>
       <!-- /.row -->
       
-      
-      
       <!-- Page Features -->
       <div class="row text-center">
+      <?php 
+      $noticias_capa = \app\controllers\SiteController::noticias_capa();
+      $n =  count($noticias_capa);
+      for($i=0; $i<$n and $i<4; $i++){
+      ?>
+      
 
         <div class="col-lg-3 col-md-6 mb-4">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Notícia 1</h4>
+              <h4 class="card-title"><?= $noticias_capa[$i]['titulo']?></h4>
               <p class="card-text">
-              O evento contará com a participação de grandes pesquisadores da área de Informática.
+             <?=substr(strip_tags($noticias_capa[$i]['corpo']), 0, 100)." [...]" ?>
               </p>
             </div>
             <div class="card-footer">
-              <a href="#" class="btn btn-primary">Ver matéria</a>
+              <a href="<?= Url::toRoute(["site/exibirnoticia","id_noticia"=>$noticias_capa[$i]['id']])?>" class="btn btn-primary">Ver matéria</a>
             </div>
           </div>
         </div>
-
-         <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Notícia 2</h4>
-              <p class="card-text">
-              O evento contará com a participação de grandes pesquisadores da área de Informática.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Ver matéria</a>
-            </div>
-          </div>
-        </div>
-           <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Notícia 3</h4>
-              <p class="card-text">
-              O evento contará com a participação de grandes pesquisadores da área de Informática.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Ver matéria</a>
-            </div>
-          </div>
-        </div>
-           <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Notícia 4</h4>
-              <p class="card-text">
-              O evento contará com a participação de grandes pesquisadores da área de Informática.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Ver matéria</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <?php }?>
+     </div>
       <!-- /.row -->     
       
       <div class="separador">

@@ -7,7 +7,7 @@ use yii\helpers\Url;
 <h5>*Para a imagem do site será aceito imagens dos tipos: .png e .jpg.</h5>
 <h5>*Adicione também um título e uma descrição.</h5>
 <h5>*Caso você não atualize, a imagem continuará a mesma.</h5>
-<a href="<?=Url::toRoute("usuario/index")?>">Voltar para o Menu</a><br/>
+<a href="<?=Url::toRoute("usuario/index3")?>">Voltar para o Menu</a><br/>
 <div class="alert alert-primary" role="alert"><?=$msg?></div>
 <?php $form = ActiveForm::begin([
      "method" => "post",
